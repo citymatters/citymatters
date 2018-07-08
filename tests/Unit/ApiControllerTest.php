@@ -93,6 +93,12 @@ class ApiControllerTest extends TestCase
             '/api/measpoints/byArea/47.9/7.6/48/7.9');
         $response->assertStatus(200);
         $response->assertJsonCount(1000);
+
+        // reversing the arguments to test if everything still works
+        $response = $this->json('GET',
+            '/api/measpoints/byArea/48/7.9/47.9/7.6');
+        $response->assertStatus(200);
+        $response->assertJsonCount(1000);
     }
 
     /**
@@ -134,6 +140,15 @@ class ApiControllerTest extends TestCase
             . now()->subMonth()->subDay()->timestamp
             . '/to/'
             . now()->addDay()->timestamp);
+        $response->assertStatus(200);
+        $response->assertJsonCount(1000);
+
+        // reversing the arguments to test if everything still works
+        $response = $this->json('GET',
+            '/api/measpoints/byAreaAndTime/48/7.9/47.9/7.6/from/'
+            . now()->addDay()->timestamp
+            . '/to/'
+            . now()->subMonth()->subDay()->timestamp);
         $response->assertStatus(200);
         $response->assertJsonCount(1000);
     }
@@ -178,7 +193,6 @@ class ApiControllerTest extends TestCase
         $middle = now()->subDays(15)->timestamp;
         $end = now()->addDay()->timestamp;
 
-        $b = $this->faker->dateTimeBetween('-30 days', '-15 days')->getTimestamp();
         $measpoints = factory(Measpoint::class, 500)->create(
             [
                 'datetime' => $this->faker->numberBetween($start, $middle),
