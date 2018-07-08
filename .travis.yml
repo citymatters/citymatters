@@ -40,7 +40,7 @@ script:
   - if [ -f storage/logs/laravel.log ]; then cat storage/logs/laravel.log; fi
 
 after_success:
-  - if [ $TRAVIS_BRANCH == 'master' ]; then git clone git@github.com:gwaldvogel/mplus.gg.git $TRAVIS_BUILD_DIR/temp; fi
+  - if [ $TRAVIS_BRANCH == 'master' ]; then git clone git@github.com:gwaldvogel/city_matters.git $TRAVIS_BUILD_DIR/temp; fi
   - if [ $TRAVIS_BRANCH == 'master' ]; then cd $TRAVIS_BUILD_DIR/temp; fi
   - if [ $TRAVIS_BRANCH == 'master' ]; then git checkout production; fi
   - if [ $TRAVIS_BRANCH == 'master' ]; then git merge --ff-only "$TRAVIS_COMMIT"; fi
