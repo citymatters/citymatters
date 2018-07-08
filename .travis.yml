@@ -17,8 +17,10 @@ services:
   - mongodb
 
 
-install:
+before_install:
   - pecl install mongodb
+
+install:
   - cp .env.travis .env
   - composer self-update
   - composer install --no-interaction
