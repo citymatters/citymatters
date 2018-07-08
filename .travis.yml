@@ -12,6 +12,7 @@ cache:
   directories:
   - node_modules
   - vendor
+  - $HOME/pecl_cache
 
 notifications:
   email:
@@ -22,9 +23,9 @@ services:
   - redis-server
   - mongodb
 
-
 before_install:
-  - pecl install mongodb
+  - composer require phwoolcon/ci-pecl-cacher -n
+  - vendor/bin/ci-pecl-install mongodb
 
 install:
   - cp .env.travis .env
