@@ -22,11 +22,14 @@ class ApiController extends Controller
         return response()->json(['success' => true]);
     }
 
-    public function measpointsByAreaInTime($latStart, $lonStart, $latEnd, $lonEnd, $startTime, $endTime) {
+    public function measpointsByAreaAndTime($latStart, $lonStart, $latEnd, $lonEnd, $startTime, $endTime) {
         $latStart = (double) $latStart;
         $lonStart = (double) $lonStart;
         $latEnd = (double) $latEnd;
         $lonEnd = (double) $lonEnd;
+
+        $startTime = (int) $startTime;
+        $endTime = (int) $endTime;
 
         if($latStart > $latEnd)
         {
@@ -56,6 +59,7 @@ class ApiController extends Controller
             ->where('datetime', '>=', $startTime)
             ->where('datetime', '<=', $endTime)
             ->get();
+
         return response()->json($measpoints);
     }
 
