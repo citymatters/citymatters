@@ -1,0 +1,116 @@
+#!/usr/bin/env bash
+
+# FROM https://github.com/phwoolcon/ci-pecl-cacher/blob/master/bin/ci-pecl-install
+
+function error {
+    echo $(date +%H:%M:%S) $1 >&2
+    exit 1
+}
+
+function info
+{
+    echo $(date +%H:%M:%S) $1
+}
+
+MODULE=$1
+
+SKIP_UPDATE=""
+case $2 in
+    "skip-update")
+        SKIP_UPDATE=$2
+        SO_NAME=$3
+        ;;
+    "")
+        SO_NAME=$3
+        ;;
+    *)
+        SO_NAME=$2
+        ;;
+esac
+
+if [[ ! ${MODULE} ]]; then
+    error "Module name not specified"
+fi
+
+if [[ ! ${SO_NAME} ]]; then
+  SO_NAME=${MODULE}
+fi
+
+function getExtDir()
+{
+    php -r 'echo ini_get("extension_dir"), PHP_EOL;'
+}
+
+function getPhpVersion()
+{
+    if [[ $(command -v phpenv) ]]; then
+        phpenv version-name
+        return 0
+    fi
+    php -r '$ver = explode(".", PHP_VERSION); echo $ver[0], ".", $ver[1], PHP_EOL;'
+}
+
+function applyLatestCachedSo()
+{
+    info "No need to update ${MODULE}"
+    info "Restoring ${LATEST_SO} to ${TARGET_SO}..."
+    cp "${LATEST_SO}" "${TARGET_SO}"
+    phpenv config-add "${CACHED_INI_FILE}"
+    phpenv rehash
+    info "Done"
+    php --ri ${MODULE}
+}
+info "Preparing variables..."
+PHP_VER=$(getPhpVersion)
+EXT_DIR=$(getExtDir)
+TARGET_SO=${EXT_DIR}/${SO_NAME}.so
+CACHE_DIR=${HOME}/pecl_cache/${PHP_VER}
+LATEST_SO=${CACHE_DIR}/${SO_NAME}.so
+CACHED_VER_FILE=${CACHE_DIR}/${MODULE}.ver
+CACHED_INI_FILE=${CACHE_DIR}/${MODULE}.ini
+
+mkdir -p ${CACHE_DIR}
+
+if [[ -f ${CACHED_VER_FILE} && -f ${LATEST_SO} && -f ${CACHED_INI_FILE} ]]; then
+    if [[ ${SKIP_UPDATE} ]]; then
+      info "Skipping updates"
+      applyLatestCachedSo
+      exit 0
+    fi
+
+    info "Cache detected: ${CACHE_DIR}"
+    ls -la --color=auto "${CACHE_DIR}"/${MODULE}*
+
+    if [ $(stat --format=%Y ${CACHED_VER_FILE}) -ge $(( `date +%s` - 86400 )) ]; then
+      applyLatestCachedSo
+      exit 0
+    fi
+
+    CACHED_VER=$(cat ${CACHED_VER_FILE})
+    info "Cached version: ${CACHED_VER}"
+
+    info "Checking remote version..."
+    REMOTE_MODULE_VER_ARRAY=( $(pecl remote-info ${MODULE} | grep 'Latest') )
+    REMOTE_MODULE_VER=${REMOTE_MODULE_VER_ARRAY[1]}
+    info "Remote version: ${REMOTE_MODULE_VER}"
+    touch ${CACHED_VER_FILE}
+
+    if [[ ${CACHED_VER} == ${REMOTE_MODULE_VER} ]]; then
+      applyLatestCachedSo
+      exit 0
+    fi
+fi
+
+info "Installing new version..."
+echo "> pecl install ${MODULE}"
+
+printf "\n" | pecl install ${MODULE} || error "Installation failed"
+
+MODULE_VER_ARRAY=( $(pecl info ${MODULE} | grep 'Release Version') )
+MODULE_VER=${MODULE_VER_ARRAY[2]}
+cp "${TARGET_SO}" "${LATEST_SO}"
+cp "${TARGET_SO}" "${LATEST_SO}-${MODULE_VER}"
+echo ${MODULE_VER} > "${CACHED_VER_FILE}"
+echo "extension=${SO_NAME}.so" > ${CACHED_INI_FILE}
+
+info "Installed ${MODULE} ${MODULE_VER}"

@@ -24,8 +24,7 @@ services:
   - mongodb
 
 before_install:
-  - composer require phwoolcon/ci-pecl-cacher -n
-  - vendor/bin/ci-pecl-install mongodb
+  - travis/ci-pecl-install mongodb
 
 install:
   - cp .env.travis .env
