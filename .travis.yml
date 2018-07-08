@@ -1,46 +1,40 @@
 language: php
-
 php: '7.2'
-
 sudo: required
 dist: trusty
 os: linux
-
 cache:
   yarn: true
   directories:
   - node_modules
   - vendor
-  - $HOME/pecl_cache
-
+  - "$HOME/pecl_cache"
 notifications:
   email:
     on_success: change
     on_failure: always
-
+  slack:
+    secure: C+X3aks2z2W3dT5ryJLnPnYYL/tbgs4XiKc9fAui3cLGeM8V5s5M2VTLG9+TpUzDzYnW07WpDINXFgzDdQdPZN8qGnnq1ZVjmFEdI1zuruJp0aDSShoQfEXNvr/kFGfBAFWd1Zus/coF/qSz4srLbQ5Yvx/AXLmv0D4dQMBDYKWLbW+AM5iT13xWYuHAHs2ARwWyUjdyTFlVhKaJ6lMXa4rrAdtuoTmoAG1frD1FGxakF8cyi1/gdcJLV+JlRjluWOJwdR287G0EewClYGAkrUGf6hFA8SRBAo1QIYk8yNFeaqtOkwac0J2AgEbsgOGHVMzPBNubNraITroZ04BRqbMY6BxKnXdhxqaprFPnFAZn00N6Jen22qqw1aFPfo6Ak4FZzKH8XbDrRThVOrgsH4Htc/jOkVcZsIQ+g3fvPaTRccLppq0W8haIPVz6FkOjZDQrDLbpe2x4L0x0pCsukPCjZ15LkFarZYTfygrEqijRzUdj/cUT7AkqaQA24n8ussi14HxMMJC/RklWq959vVXWAMTaWdChh6kb7WVu90vbWmN6neKhAPByS0QxIR/wAU8KIfNYOqx4M2a38szPjWMKWwxL0SA+OP63KYt76AwlfZB4k9KJYGzX3tXvJiTPPi0c7/87AT5D38gfEagt6wfYuteqaTDNzSQ1odohiIY=
 services:
-  - redis-server
-  - mongodb
-
+- redis-server
+- mongodb
 before_install:
-  - travis/ci-pecl-install mongodb
-
+- travis/ci-pecl-install mongodb
 install:
-  - cp .env.travis .env
-  - composer self-update
-  - composer install --no-interaction
-  - php artisan key:generate
-  - node -v
-  - yarn install
-  - yarn run prod
-
+- cp .env.travis .env
+- composer self-update
+- composer install --no-interaction
+- php artisan key:generate
+- node -v
+- yarn install
+- yarn run prod
 script:
-  - vendor/bin/phpunit
-  - if [ -f storage/logs/laravel.log ]; then cat storage/logs/laravel.log; fi
-
+- vendor/bin/phpunit
+- if [ -f storage/logs/laravel.log ]; then cat storage/logs/laravel.log; fi
 after_success:
-  - if [ $TRAVIS_BRANCH == 'master' ]; then git clone git@github.com:gwaldvogel/city_matters.git $TRAVIS_BUILD_DIR/temp; fi
-  - if [ $TRAVIS_BRANCH == 'master' ]; then cd $TRAVIS_BUILD_DIR/temp; fi
-  - if [ $TRAVIS_BRANCH == 'master' ]; then git checkout production; fi
-  - if [ $TRAVIS_BRANCH == 'master' ]; then git merge --ff-only "$TRAVIS_COMMIT"; fi
-  - if [ $TRAVIS_BRANCH == 'master' ]; then git push origin production; fi
+- if [ $TRAVIS_BRANCH == 'master' ]; then git clone git@github.com:gwaldvogel/city_matters.git
+  $TRAVIS_BUILD_DIR/temp; fi
+- if [ $TRAVIS_BRANCH == 'master' ]; then cd $TRAVIS_BUILD_DIR/temp; fi
+- if [ $TRAVIS_BRANCH == 'master' ]; then git checkout production; fi
+- if [ $TRAVIS_BRANCH == 'master' ]; then git merge --ff-only "$TRAVIS_COMMIT"; fi
+- if [ $TRAVIS_BRANCH == 'master' ]; then git push origin production; fi
