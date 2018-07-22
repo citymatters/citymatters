@@ -152,7 +152,6 @@ return [
          */
         Jenssegers\Mongodb\MongodbServiceProvider::class,
         Jenssegers\Mongodb\Auth\PasswordResetServiceProvider::class,
-        Barryvdh\Debugbar\ServiceProvider::class,
         Neoxia\Routing\ResponseFactoryServiceProvider::class,
 
         /*
