@@ -18,8 +18,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 
-Route::post('/add', 'ApiController@add');
+Route::post('/add', 'MeaspointsController@add');
 
-Route::get('/measpoints/byArea/{latStart}/{lonStart}/{latEnd}/{lonEnd}', 'ApiController@measpointsByArea');
+Route::get('/measpoints/byArea/{latStart}/{lonStart}/{latEnd}/{lonEnd}', 'MeaspointsController@measpointsByArea');
 Route::get('/measpoints/byAreaAndTime/{latStart}/{lonStart}/{latEnd}/{lonEnd}/from/{startTime}/to/{endTime}',
-    'ApiController@measpointsByAreaAndTime');
+    'MeaspointsController@measpointsByAreaAndTime');

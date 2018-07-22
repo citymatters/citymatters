@@ -16,13 +16,16 @@
         "cross-env": "^5.1",
         "laravel-mix": "^2.0",
         "lodash": "^4.17.4",
-        "popper.js": "^1.12",
+        "popper.js": "^1.14.3",
         "vue": "^2.5.7"
     },
     "dependencies": {
         "babel-plugin-transform-class-properties": "^6.24.1",
         "babel-preset-es2017": "^6.24.1",
+        "bootstrap": "^4.1.2",
+        "clipboard": "^2.0.1",
         "copy-webpack-plugin": "^4.5.2",
+        "font-awesome": "^4.7.0",
         "imagemin-mozjpeg": "^7.0.0",
         "imagemin-webpack-plugin": "^2.1.5",
         "jquery": "^3.3.1",

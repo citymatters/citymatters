@@ -1,13 +1,18 @@
-
-// Fonts
-@import url("https://fonts.googleapis.com/css?family=Raleway:300,400,600");
+@import "~bootstrap/scss/bootstrap";
+@import "~font-awesome/scss/font-awesome";
 
 // Variables
 @import "variables";
 
-@import "~materialize-css/sass/materialize";
 
-.nav-wrapper {
-  padding-left: 1rem;
-  padding-right: 1rem;
+.adminbar {
+  a.navbar-brand {
+    font-size: 1rem;
+    padding: .05rem;
+  }
+  a.nav-link {
+    padding-top: .1rem;
+    padding-bottom: .1rem;
+  }
+  padding: .3rem;
 }

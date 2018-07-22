@@ -1,5 +1,9 @@
-require('materialize-css');
+require('bootstrap');
 require('jquery');
-require('materialize-css');
+let ClipboardJS = require('clipboard');
 
-M.AutoInit();
+jQuery(function () {
+    jQuery('[data-toggle="tooltip"]').tooltip()
+});
+
+new ClipboardJS('.copytoclipboard');

@@ -19,9 +19,12 @@ mix.autoload({
     'jquery': ['jQuery', '$']
 });
 
-mix.js('resources/assets/js/app.js', 'public/js')
-    .extract(['jquery', 'materialize-css']);
-mix.sass('resources/assets/sass/app.scss', 'public/css');
+mix.js('resources/assets/js/app.js', 'public/js/app.js')
+    .extract(['jquery', 'popper.js', 'bootstrap', 'clipboard']);
+mix.sass('resources/assets/sass/app.scss', 'public/css/app.css');
+
+
+mix.copy('node_modules/font-awesome/fonts', 'public/fonts');
 
 // if(mix.inProduction()) {
     mix.webpackConfig({
@@ -49,7 +52,6 @@ mix.sass('resources/assets/sass/app.scss', 'public/css');
 // }
 
 mix.version(['public/images']);
-
 mix.version();
 
 // mix.browserSync('citymatters.test');
