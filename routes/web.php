@@ -18,6 +18,12 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::get('/admin/sensors', 'SensorController@adminIndex')->name('admin.sensors');
-Route::get('/admin/invites', 'UserController@adminInvites')->name('admin.invites');
-Route::any('/admin/invites/add', 'UserController@adminAddInvites')->name('admin.invites.add');
+Route::get('/settings', 'HomeController@index')->name('user.settings');
+
+Route::namespace('Admin')->group(function () {
+    Route::get('/admin/sensors', 'SensorController@index')->name('admin.sensors');
+    Route::get('/admin/sensor/{uuid}', 'SensorController@sensor')->name('admin.sensor');
+    Route::get('/admin/invites', 'UserController@invites')->name('admin.invites');
+    Route::any('/admin/invites/add', 'UserController@addInvites')->name('admin.invites.add');
+    Route::any('/admin/invites/delete/{id}', 'UserController@deleteInvite')->name('admin.invites.delete');
+});

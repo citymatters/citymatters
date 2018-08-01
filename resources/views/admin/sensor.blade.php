@@ -1,6 +1,6 @@
 @extends('layout.app')
 @section('title')
-    {{ __('Sensor list') }} - city_matters
+    {{ $sensor->owner->name }}/{{ $sensor->uuid }}  - city_matters
 @endsection
 @section('content')
     <table class="table table-bordered table-striped">
@@ -12,17 +12,13 @@
         </tr>
         </thead>
         <tbody>
-        @foreach($sensors as $sensor)
         <tr>
             <th scope="row">
-                <a href="{{ url('/admin/sensor/' . $sensor->uuid) }}">
                 {{ $sensor->owner->name }} / {{ $sensor->uuid }}
-                </a>
             </td>
             <td>{{ $sensor->last_measpoint }}</td>
             <td>{{ $sensor->updated_at }}</td>
         </tr>
-        @endforeach
         </tbody>
     </table>
 @endsection
