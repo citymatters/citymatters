@@ -54,6 +54,11 @@ class UserController extends Controller
     public function addInvites(Request $request) {
         if($request->has('code'))
         {
+            if(Invite::where('code', $request->get('code'))->first())
+            {
+                return redirect()->back();
+            }
+
             $invite = new Invite();
             $invite->code = $request->get('code');
 
