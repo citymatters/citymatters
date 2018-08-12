@@ -80,42 +80,43 @@ class ApiControllerTest extends TestCase
             $type = $payload['data'][$i]['type'];
             $this->assertEquals($payload['data'][$i]['value'], $measpoint->$type);
         }
+        $measpoint->delete();
     }
 
     /**
-     * Generates 1000 measpoints and retrieves them via the /api/measpoints/byArea endpoint (smoke test)
+     * Generates 10 measpoints and retrieves them via the /api/measpoints/byArea endpoint (smoke test)
      */
     public function testMeaspointsByArea() {
         $this->resetDatabase();
-        $measpoints = factory(Measpoint::class, 1000)->create();
+        $measpoints = factory(Measpoint::class, 10)->create();
 
         $response = $this->json('GET',
             '/api/measpoints/byArea/47.9/7.6/48/7.9');
         $response->assertStatus(200);
-        $response->assertJsonCount(1000);
+        $response->assertJsonCount(10);
 
         // reversing the arguments to test if everything still works
         $response = $this->json('GET',
             '/api/measpoints/byArea/48/7.9/47.9/7.6');
         $response->assertStatus(200);
-        $response->assertJsonCount(1000);
+        $response->assertJsonCount(10);
     }
 
     /**
-     * Generates 1000 measpoints and retrieves them via the /api/measpoints/byArea endpoint and retrieves
+     * Generates 10 measpoints and retrieves them via the /api/measpoints/byArea endpoint and retrieves
      * only a portion of that
      */
     public function testMeaspointsByAreaFilterArea()
     {
         $this->resetDatabase();
-        $measpoints = factory(Measpoint::class, 500)->create(
+        $measpoints = factory(Measpoint::class, 5)->create(
             [
                 'lat' => $this->faker->randomFloat(6, 47.95, 48),
                 'lon' => $this->faker->randomFloat(6, 7.65, 7.9),
             ]
         );
 
-        $measpoints = factory(Measpoint::class, 500)->create(
+        $measpoints = factory(Measpoint::class, 5)->create(
             [
                 'lat' => $this->faker->randomFloat(6, 47.9, 47.95),
                 'lon' => $this->faker->randomFloat(6, 7.6, 7.65),
@@ -125,15 +126,15 @@ class ApiControllerTest extends TestCase
         $response = $this->json('GET',
             '/api/measpoints/byArea/47.9/7.6/47.95/7.65');
         $response->assertStatus(200);
-        $response->assertJsonCount(500);
+        $response->assertJsonCount(5);
     }
 
     /**
-     * Generates 1000 measpoints and retrieves them via the /api/measpoints/byAreaAndTime endpoint (smoke test)
+     * Generates 10 measpoints and retrieves them via the /api/measpoints/byAreaAndTime endpoint (smoke test)
      */
     public function testMeaspointsByAreaAndTime() {
         $this->resetDatabase();
-        $measpoints = factory(Measpoint::class, 1000)->create();
+        $measpoints = factory(Measpoint::class, 10)->create();
 
         $response = $this->json('GET',
             '/api/measpoints/byAreaAndTime/47.9/7.6/48/7.9/from/'
@@ -141,7 +142,7 @@ class ApiControllerTest extends TestCase
             . '/to/'
             . now()->addDay()->timestamp);
         $response->assertStatus(200);
-        $response->assertJsonCount(1000);
+        $response->assertJsonCount(10);
 
         // reversing the arguments to test if everything still works
         $response = $this->json('GET',
@@ -150,23 +151,23 @@ class ApiControllerTest extends TestCase
             . '/to/'
             . now()->subMonth()->subDay()->timestamp);
         $response->assertStatus(200);
-        $response->assertJsonCount(1000);
+        $response->assertJsonCount(10);
     }
 
     /**
-     * Generates 1000 measpoints and retrieves them via the /api/measpoints/byAreaAndTime endpoint
+     * Generates 10 measpoints and retrieves them via the /api/measpoints/byAreaAndTime endpoint
      * The results should be filtered by area
      */
     public function testMeaspointsByAreaAndTimeFilterArea() {
         $this->resetDatabase();
-        $measpoints = factory(Measpoint::class, 500)->create(
+        $measpoints = factory(Measpoint::class, 5)->create(
             [
                 'lat' => $this->faker->randomFloat(6, 47.95, 48),
                 'lon' => $this->faker->randomFloat(6, 7.65, 7.9),
             ]
         );
 
-        $measpoints = factory(Measpoint::class, 500)->create(
+        $measpoints = factory(Measpoint::class, 5)->create(
             [
                 'lat' => $this->faker->randomFloat(6, 47.9, 47.95),
                 'lon' => $this->faker->randomFloat(6, 7.6, 7.65),
@@ -179,11 +180,11 @@ class ApiControllerTest extends TestCase
             . '/to/'
             . now()->addDay()->timestamp);
         $response->assertStatus(200);
-        $response->assertJsonCount(500);
+        $response->assertJsonCount(5);
     }
 
     /**
-     * Generates 1000 measpoints and retrieves them via the /api/measpoints/byAreaAndTime endpoint
+     * Generates 10 measpoints and retrieves them via the /api/measpoints/byAreaAndTime endpoint
      * The results should be filtered by time
      */
     public function testMeaspointsByAreaAndTimeFilterTime() {
@@ -193,13 +194,13 @@ class ApiControllerTest extends TestCase
         $middle = now()->subDays(15)->timestamp;
         $end = now()->addDay()->timestamp;
 
-        $measpoints = factory(Measpoint::class, 500)->create(
+        $measpoints = factory(Measpoint::class, 5)->create(
             [
                 'datetime' => $this->faker->numberBetween($start, $middle),
             ]
         );
 
-        $measpoints = factory(Measpoint::class, 500)->create(
+        $measpoints = factory(Measpoint::class, 5)->create(
             [
                 'datetime' => $this->faker->numberBetween($middle, $end),
             ]
@@ -212,6 +213,6 @@ class ApiControllerTest extends TestCase
 
         $response = $this->json('GET', $endpoint);
         $response->assertStatus(200);
-        $response->assertJsonCount(500);
+        $response->assertJsonCount(5);
     }
 }

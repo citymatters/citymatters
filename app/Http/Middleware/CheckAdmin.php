@@ -20,14 +20,11 @@ class CheckAdmin
         {
             return $next($request);
         }
-        else
+        if(Auth::user()->admin == null)
         {
-            if(Auth::user()->admin == null)
-            {
-                Auth::user()->admin = false;
-                Auth::user()->save();
-            }
-            abort(403, __('You do not have the permission to view this page.'));
+            Auth::user()->admin = false;
+            Auth::user()->save();
         }
+        return abort(403, __('You do not have the permission to view this page.'));
     }
 }
