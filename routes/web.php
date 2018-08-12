@@ -21,6 +21,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/settings', 'HomeController@index')->name('user.settings');
 
 Route::group(['middleware' => 'admin', 'namespace' => 'Admin',], function () {
+    Route::get('/dashboard', 'HomeController@index')->name('admin.dashboard');
     Route::get('/admin/sensors', 'SensorController@index')->name('admin.sensors');
     Route::get('/admin/sensor/{uuid}', 'SensorController@sensor')->name('admin.sensor');
 
