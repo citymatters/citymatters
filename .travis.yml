@@ -1,6 +1,8 @@
 language: php
-php: '7.2'
-sudo: required
+php:
+- 7.2
+- nightly
+sudo: false
 dist: trusty
 os: linux
 cache:
