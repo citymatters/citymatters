@@ -10,16 +10,19 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item {{ Request::url() == route('home') ? 'active' : '' }}">
-                    <a class="nav-link" href="{{ route('home') }}">Dashboard <span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="{{ route('home') }}">{{ __('Dashboard') }}</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Users</a>
+                    <a class="nav-link" href="#">{{ __('Users') }}</a>
                 </li>
                 <li class="nav-item {{ Request::url() == route('admin.sensors') ? 'active' : '' }}">
-                    <a class="nav-link" href="{{ route('admin.sensors') }}">Sensors</a>
+                    <a class="nav-link" href="{{ route('admin.sensors') }}">{{ __('Sensors') }}</a>
+                </li>
+                <li class="nav-item {{ Request::url() == route('admin.organizations') ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ route('admin.organizations') }}">{{ __('Organizations') }}</a>
                 </li>
                 <li class="nav-item {{ Request::url() == route('admin.invites') ? 'active' : '' }}">
-                    <a class="nav-link" href="{{ route('admin.invites') }}">Invites</a>
+                    <a class="nav-link" href="{{ route('admin.invites') }}">{{ __('Invites') }}</a>
                 </li>
             </ul>
         </div>

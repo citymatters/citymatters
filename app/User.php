@@ -93,4 +93,8 @@ class User extends Model implements AuthenticatableContract
     public function sensors() {
         return $this->hasMany('App\Sensor', 'user_id');
     }
+
+    public function organizations() {
+        return $this->belongsToMany('App\Organization')->withPivot('is_admin');
+    }
 }

@@ -4,11 +4,46 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Invite;
+use App\Organization;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rules\In;
 
 class UserController extends Controller
 {
+    public function organizations()
+    {
+        $organizations = Organization::paginate(25);
+        return view('admin.organizations', [
+            'organizations' => $organizations,
+        ]);
+    }
+
+    public function organization($id)
+    {
+        $organization = Organization::findOrFail($id);
+        return view('admin.organization', [
+            'organization' => $organization,
+        ]);
+    }
+
+    public function addOrganizations(Request $request) {
+        if($request->has('organizationName'))
+        {
+            if(Organization::where('name', $request->get('organizationName'))->first()
+                || Organization::where('slug', $request->get('organizationSlug'))->first())
+            {
+                return redirect()->back();
+            }
+
+            $org = new Organization();
+            $org->name = $request->get('organizationName');
+            $org->slug = $request->get('organizationSlug');
+            $org->save();
+            return redirect(route('admin.organizations'));
+        }
+        return view('admin.organizationsadd');
+    }
+
     public function invites() {
         $invites = Invite::paginate(50);
         return view('admin.invites', [
