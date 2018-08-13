@@ -1,5 +1,9 @@
 <?php
 
+/*
+ * Copyright (C) 2018 city_matters. All rights reserved.
+ */
+
 namespace App\Http;
 
 use Illuminate\Foundation\Http\Kernel as HttpKernel;

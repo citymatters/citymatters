@@ -1,5 +1,9 @@
 <?php
 
+/*
+ * Copyright (C) 2018 city_matters. All rights reserved.
+ */
+
 return [
 
     /*
@@ -86,8 +90,8 @@ return [
             'username' => env('DB_USERNAME'),
             'password' => env('DB_PASSWORD'),
             'options'  => [
-                'database' => 'admin' // sets the authentication database required by mongo 3
-            ]
+                'database' => 'admin', // sets the authentication database required by mongo 3
+            ],
         ],
     ],
 

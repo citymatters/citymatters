@@ -1,22 +1,29 @@
 <?php
 
+/*
+ * Copyright (C) 2018 city_matters. All rights reserved.
+ */
+
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
 use App\Sensor;
-use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class SensorController extends Controller
 {
-    public function index() {
+    public function index()
+    {
         $sensors = Sensor::paginate(25);
+
         return view('admin.sensors', [
-            'sensors' => $sensors
+            'sensors' => $sensors,
         ]);
     }
 
-    public function sensor($uuid) {
+    public function sensor($uuid)
+    {
         $sensor = Sensor::where('uuid', $uuid)->firstOrFail();
+
         return view('admin.sensor', [
             'sensor' => $sensor,
         ]);

@@ -1,5 +1,9 @@
 <?php
 
+/*
+ * Copyright (C) 2018 city_matters. All rights reserved.
+ */
+
 namespace App\Http\Middleware;
 
 use Closure;
@@ -16,15 +20,14 @@ class CheckAdmin
      */
     public function handle($request, Closure $next)
     {
-        if(Auth::check() && Auth::user()->admin == true)
-        {
+        if (Auth::check() && Auth::user()->admin == true) {
             return $next($request);
         }
-        if(Auth::user()->admin == null)
-        {
+        if (Auth::user()->admin == null) {
             Auth::user()->admin = false;
             Auth::user()->save();
         }
+
         return abort(403, __('You do not have the permission to view this page.'));
     }
 }

@@ -1,9 +1,13 @@
 <?php
 
+/*
+ * Copyright (C) 2018 city_matters. All rights reserved.
+ */
+
 namespace App\Providers;
 
-use Illuminate\Support\ServiceProvider;
 use Laravel\Passport\Passport;
+use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {

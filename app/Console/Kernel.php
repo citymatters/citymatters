@@ -1,5 +1,9 @@
 <?php
 
+/*
+ * Copyright (C) 2018 city_matters. All rights reserved.
+ */
+
 namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;

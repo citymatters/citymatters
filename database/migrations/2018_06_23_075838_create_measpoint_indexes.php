@@ -1,7 +1,10 @@
 <?php
 
+/*
+ * Copyright (C) 2018 city_matters. All rights reserved.
+ */
+
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 class CreateMeaspointIndexes extends Migration
@@ -13,7 +16,7 @@ class CreateMeaspointIndexes extends Migration
      */
     public function up()
     {
-        Schema::table('measpoints', function($collection) {
+        Schema::table('measpoints', function ($collection) {
             $collection->index(['lat', 'lon']);
             $collection->index(['lat', 'lon', 'datetime']);
         });

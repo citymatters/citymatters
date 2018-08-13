@@ -1,5 +1,9 @@
 <?php
 
+/*
+ * Copyright (C) 2018 city_matters. All rights reserved.
+ */
+
 namespace App\Http\Controllers;
 
 use App\Measpoint;
@@ -7,46 +11,45 @@ use Illuminate\Http\Request;
 
 class MeaspointsController extends Controller
 {
-    public function add(Request $request) {
+    public function add(Request $request)
+    {
         $measpoint = new Measpoint();
         $measpoint->sensor = $request->json('sensor');
         $measpoint->lat = $request->json('lat');
         $measpoint->lon = $request->json('lon');
         $measpoint->datetime = $request->json('datetime');
-        foreach($request->json('data') as $data)
-        {
+        foreach ($request->json('data') as $data) {
             $type = $data['type'];
             $measpoint->$type = $data['value'];
         }
         $measpoint->save();
+
         return response()->json(['success' => true]);
     }
 
-    public function measpointsByAreaAndTime($latStart, $lonStart, $latEnd, $lonEnd, $startTime, $endTime) {
-        $latStart = (double) $latStart;
-        $lonStart = (double) $lonStart;
-        $latEnd = (double) $latEnd;
-        $lonEnd = (double) $lonEnd;
+    public function measpointsByAreaAndTime($latStart, $lonStart, $latEnd, $lonEnd, $startTime, $endTime)
+    {
+        $latStart = (float) $latStart;
+        $lonStart = (float) $lonStart;
+        $latEnd = (float) $latEnd;
+        $lonEnd = (float) $lonEnd;
 
         $startTime = (int) $startTime;
         $endTime = (int) $endTime;
 
-        if($latStart > $latEnd)
-        {
+        if ($latStart > $latEnd) {
             $a = $latStart;
             $latStart = $latEnd;
             $latEnd = $a;
         }
 
-        if($lonStart > $lonEnd)
-        {
+        if ($lonStart > $lonEnd) {
             $a = $lonStart;
             $lonStart = $lonEnd;
             $lonEnd = $a;
         }
 
-        if($startTime > $endTime)
-        {
+        if ($startTime > $endTime) {
             $a = $startTime;
             $startTime = $endTime;
             $endTime = $a;
@@ -63,21 +66,20 @@ class MeaspointsController extends Controller
         return response()->json($measpoints);
     }
 
-    public function measpointsByArea($latStart, $lonStart, $latEnd, $lonEnd) {
-        $latStart = (double) $latStart;
-        $lonStart = (double) $lonStart;
-        $latEnd = (double) $latEnd;
-        $lonEnd = (double) $lonEnd;
+    public function measpointsByArea($latStart, $lonStart, $latEnd, $lonEnd)
+    {
+        $latStart = (float) $latStart;
+        $lonStart = (float) $lonStart;
+        $latEnd = (float) $latEnd;
+        $lonEnd = (float) $lonEnd;
 
-        if($latStart > $latEnd)
-        {
+        if ($latStart > $latEnd) {
             $a = $latStart;
             $latStart = $latEnd;
             $latEnd = $a;
         }
 
-        if($lonStart > $lonEnd)
-        {
+        if ($lonStart > $lonEnd) {
             $a = $lonStart;
             $lonStart = $lonEnd;
             $lonEnd = $a;
@@ -88,6 +90,7 @@ class MeaspointsController extends Controller
             ->where('lon', '>=', $lonStart)
             ->where('lon', '<=', $lonEnd)
             ->get();
+
         return response()->json($measpoints);
     }
 }
