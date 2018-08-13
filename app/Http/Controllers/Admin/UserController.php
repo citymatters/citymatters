@@ -32,7 +32,7 @@ class UserController extends Controller
             if(Organization::where('name', $request->get('organizationName'))->first()
                 || Organization::where('slug', $request->get('organizationSlug'))->first())
             {
-                return redirect()->back();
+                return redirect(route('admin.organizations.add'));
             }
 
             $org = new Organization();
@@ -56,7 +56,7 @@ class UserController extends Controller
         {
             if(Invite::where('code', $request->get('code'))->first())
             {
-                return redirect()->back();
+                return redirect(route('admin.invites.add'));
             }
 
             $invite = new Invite();

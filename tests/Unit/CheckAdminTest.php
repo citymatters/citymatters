@@ -28,5 +28,8 @@ class CheckAdminTest extends TestCase
         $this->actingAs($admin)
             ->get(route('admin.dashboard'))
             ->assertSuccessful();
+
+        $user->delete();
+        $admin->delete();
     }
 }
