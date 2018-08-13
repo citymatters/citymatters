@@ -1,10 +1,15 @@
 <?php
 
+/*
+ * Copyright (C) 2018 city_matters. All rights reserved.
+ */
+
 use Faker\Generator as Faker;
 
 $factory->define(\App\Measpoint::class, function (Faker $faker) {
     $pm2 = $faker->randomFloat(2, 1, 30);
     $pm10 = $pm2 + $faker->randomFloat(2, 1, 20);
+
     return [
         'sensor' => $faker->uuid,
         'lat' => $faker->randomFloat(6, 47.9, 48),

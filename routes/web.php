@@ -1,15 +1,8 @@
 <?php
 
 /*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
+ * Copyright (C) 2018 city_matters. All rights reserved.
+ */
 
 Route::get('/', function () {
     return view('index');
@@ -20,7 +13,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/settings', 'HomeController@index')->name('user.settings');
 
-Route::group(['middleware' => 'admin', 'namespace' => 'Admin',], function () {
+Route::group(['middleware' => 'admin', 'namespace' => 'Admin'], function () {
     Route::get('/dashboard', 'HomeController@index')->name('admin.dashboard');
     Route::get('/admin/sensors', 'SensorController@index')->name('admin.sensors');
     Route::get('/admin/sensor/{uuid}', 'SensorController@sensor')->name('admin.sensor');

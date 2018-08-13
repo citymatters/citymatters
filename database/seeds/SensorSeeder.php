@@ -1,5 +1,9 @@
 <?php
 
+/*
+ * Copyright (C) 2018 city_matters. All rights reserved.
+ */
+
 use Illuminate\Database\Seeder;
 
 class SensorSeeder extends Seeder

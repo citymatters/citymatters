@@ -1,11 +1,14 @@
 <?php
 
+/*
+ * Copyright (C) 2018 city_matters. All rights reserved.
+ */
+
 namespace App;
 
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Jenssegers\Mongodb\Eloquent\Model as Model;
+use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 
 class User extends Model implements AuthenticatableContract
 {
@@ -90,11 +93,13 @@ class User extends Model implements AuthenticatableContract
         return 'remember_token';
     }
 
-    public function sensors() {
+    public function sensors()
+    {
         return $this->hasMany('App\Sensor', 'user_id');
     }
 
-    public function organizations() {
+    public function organizations()
+    {
         return $this->belongsToMany('App\Organization')->withPivot('is_admin');
     }
 }

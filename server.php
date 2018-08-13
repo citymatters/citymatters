@@ -1,10 +1,7 @@
 <?php
 
-/**
- * Laravel - A PHP Framework For Web Artisans
- *
- * @package  Laravel
- * @author   Taylor Otwell <taylor@laravel.com>
+/*
+ * Copyright (C) 2018 city_matters. All rights reserved.
  */
 
 $uri = urldecode(

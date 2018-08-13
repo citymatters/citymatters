@@ -1,5 +1,9 @@
 <?php
 
+/*
+ * Copyright (C) 2018 city_matters. All rights reserved.
+ */
+
 namespace Tests\Unit;
 
 use App\Measpoint;
@@ -16,18 +20,18 @@ class ApiControllerTest extends TestCase
     }
 
     /**
-     * Deletes all measpoints from the database
+     * Deletes all measpoints from the database.
      */
-    protected function resetDatabase() {
+    protected function resetDatabase()
+    {
         $measpoints = Measpoint::all();
-        foreach($measpoints as $measpoint)
-        {
+        foreach ($measpoints as $measpoint) {
             $measpoint->delete();
         }
     }
 
     /**
-     * Tests the /api/add endpoint by sending an example json and retrieving the saved Measpoint from the database
+     * Tests the /api/add endpoint by sending an example json and retrieving the saved Measpoint from the database.
      */
     public function testAdd()
     {
@@ -75,8 +79,7 @@ class ApiControllerTest extends TestCase
         $this->assertEquals($payload['lat'], $measpoint->lat);
         $this->assertEquals($payload['lon'], $measpoint->lon);
         $this->assertEquals($payload['datetime'], $measpoint->datetime);
-        for($i = 0; $i < 4; $i++)
-        {
+        for ($i = 0; $i < 4; $i++) {
             $type = $payload['data'][$i]['type'];
             $this->assertEquals($payload['data'][$i]['value'], $measpoint->$type);
         }
@@ -84,9 +87,10 @@ class ApiControllerTest extends TestCase
     }
 
     /**
-     * Generates 10 measpoints and retrieves them via the /api/measpoints/byArea endpoint (smoke test)
+     * Generates 10 measpoints and retrieves them via the /api/measpoints/byArea endpoint (smoke test).
      */
-    public function testMeaspointsByArea() {
+    public function testMeaspointsByArea()
+    {
         $this->resetDatabase();
         $measpoints = factory(Measpoint::class, 10)->create();
 
@@ -104,7 +108,7 @@ class ApiControllerTest extends TestCase
 
     /**
      * Generates 10 measpoints and retrieves them via the /api/measpoints/byArea endpoint and retrieves
-     * only a portion of that
+     * only a portion of that.
      */
     public function testMeaspointsByAreaFilterArea()
     {
@@ -130,35 +134,37 @@ class ApiControllerTest extends TestCase
     }
 
     /**
-     * Generates 10 measpoints and retrieves them via the /api/measpoints/byAreaAndTime endpoint (smoke test)
+     * Generates 10 measpoints and retrieves them via the /api/measpoints/byAreaAndTime endpoint (smoke test).
      */
-    public function testMeaspointsByAreaAndTime() {
+    public function testMeaspointsByAreaAndTime()
+    {
         $this->resetDatabase();
         $measpoints = factory(Measpoint::class, 10)->create();
 
         $response = $this->json('GET',
             '/api/measpoints/byAreaAndTime/47.9/7.6/48/7.9/from/'
-            . now()->subMonth()->subDay()->timestamp
-            . '/to/'
-            . now()->addDay()->timestamp);
+            .now()->subMonth()->subDay()->timestamp
+            .'/to/'
+            .now()->addDay()->timestamp);
         $response->assertStatus(200);
         $response->assertJsonCount(10);
 
         // reversing the arguments to test if everything still works
         $response = $this->json('GET',
             '/api/measpoints/byAreaAndTime/48/7.9/47.9/7.6/from/'
-            . now()->addDay()->timestamp
-            . '/to/'
-            . now()->subMonth()->subDay()->timestamp);
+            .now()->addDay()->timestamp
+            .'/to/'
+            .now()->subMonth()->subDay()->timestamp);
         $response->assertStatus(200);
         $response->assertJsonCount(10);
     }
 
     /**
      * Generates 10 measpoints and retrieves them via the /api/measpoints/byAreaAndTime endpoint
-     * The results should be filtered by area
+     * The results should be filtered by area.
      */
-    public function testMeaspointsByAreaAndTimeFilterArea() {
+    public function testMeaspointsByAreaAndTimeFilterArea()
+    {
         $this->resetDatabase();
         $measpoints = factory(Measpoint::class, 5)->create(
             [
@@ -176,18 +182,19 @@ class ApiControllerTest extends TestCase
 
         $response = $this->json('GET',
             '/api/measpoints/byAreaAndTime/47.9/7.6/47.95/7.65/from/'
-            . now()->subMonth()->subDay()->timestamp
-            . '/to/'
-            . now()->addDay()->timestamp);
+            .now()->subMonth()->subDay()->timestamp
+            .'/to/'
+            .now()->addDay()->timestamp);
         $response->assertStatus(200);
         $response->assertJsonCount(5);
     }
 
     /**
      * Generates 10 measpoints and retrieves them via the /api/measpoints/byAreaAndTime endpoint
-     * The results should be filtered by time
+     * The results should be filtered by time.
      */
-    public function testMeaspointsByAreaAndTimeFilterTime() {
+    public function testMeaspointsByAreaAndTimeFilterTime()
+    {
         $this->resetDatabase();
 
         $start = now()->subDays(30)->timestamp;
@@ -207,9 +214,9 @@ class ApiControllerTest extends TestCase
         );
 
         $endpoint = '/api/measpoints/byAreaAndTime/47.9/7.6/48/7.9/from/'
-            . $start
-            . '/to/'
-            . $middle;
+            .$start
+            .'/to/'
+            .$middle;
 
         $response = $this->json('GET', $endpoint);
         $response->assertStatus(200);

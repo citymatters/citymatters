@@ -1,21 +1,23 @@
 <?php
 
+/*
+ * Copyright (C) 2018 city_matters. All rights reserved.
+ */
+
 namespace Tests\Unit;
 
-use App\Invite;
-use App\Organization;
 use App\User;
-use Illuminate\Foundation\Testing\WithoutMiddleware;
+use App\Invite;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use App\Organization;
+use Illuminate\Foundation\Testing\WithoutMiddleware;
 
 class UserControllerTest extends TestCase
 {
     use WithoutMiddleware;
 
     /**
-     * Testing the addOrganizations() method of the Admin\UserController
+     * Testing the addOrganizations() method of the Admin\UserController.
      *
      * @return void
      */
@@ -60,7 +62,7 @@ class UserControllerTest extends TestCase
     }
 
     /**
-     * Testing the addInvites() method of the Admin\UserController
+     * Testing the addInvites() method of the Admin\UserController.
      *
      * @return void
      */

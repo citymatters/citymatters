@@ -1,8 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+/*
+ * Copyright (C) 2018 city_matters. All rights reserved.
+ */
 
-use Illuminate\Http\Request;
+namespace App\Http\Controllers;
 
 class HomeController extends Controller
 {

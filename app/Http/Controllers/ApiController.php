@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+/*
+ * Copyright (C) 2018 city_matters. All rights reserved.
+ */
 
-use App\Measpoint;
-use Illuminate\Http\Request;
+namespace App\Http\Controllers;
 
 class ApiController extends Controller
 {
-
 }
