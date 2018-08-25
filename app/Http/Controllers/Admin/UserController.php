@@ -8,11 +8,48 @@ namespace App\Http\Controllers\Admin;
 
 use App\Invite;
 use App\Organization;
+use App\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class UserController extends Controller
 {
+    public function users()
+    {
+        $users = User::paginate(25);
+        return view('admin.users', [
+            'users' => $users,
+            ]);
+    }
+
+    public function user($id)
+    {
+        $user = User::findOrFail($id);
+
+        return view('admin.user', [
+            'user' => $user,
+        ]);
+    }
+
+    public function modifyUser(Request $request)
+    {
+        if ($request->has('organizationName')) {
+            if (Organization::where('name', $request->get('organizationName'))->first()
+                || Organization::where('slug', $request->get('organizationSlug'))->first()) {
+                return redirect(route('admin.organizations.add'));
+            }
+
+            $org = new Organization();
+            $org->name = $request->get('organizationName');
+            $org->slug = $request->get('organizationSlug');
+            $org->save();
+
+            return redirect(route('admin.organizations'));
+        }
+
+        return redirect()->back();
+    }
+
     public function organizations()
     {
         $organizations = Organization::paginate(25);

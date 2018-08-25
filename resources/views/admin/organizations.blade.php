@@ -23,8 +23,8 @@
                 <td>{{ $organization->id }}</td>
                 <td><a href="{{ route('admin.organization', ['id' => $organization->id]) }}">{{ $organization->name }}</a></td>
                 <td>{{ $organization->slug }}</td>
-                <td>{{ count($organization->sensors) }}</td>
                 <td>{{ count($organization->members) }}</td>
+                <td>{{ count($organization->sensors) }}</td>
                 <td>
                     <a href="#"><i class="fa fa-trash"></i></a>
                 </td>
@@ -32,4 +32,5 @@
         @endforeach
         </tbody>
     </table>
+    {{ $organizations->links() }}
 @endsection

@@ -18,6 +18,10 @@ Route::group(['middleware' => 'admin', 'namespace' => 'Admin'], function () {
     Route::get('/admin/sensors', 'SensorController@index')->name('admin.sensors');
     Route::get('/admin/sensor/{uuid}', 'SensorController@sensor')->name('admin.sensor');
 
+    Route::get('/admin/users/{id}', 'UserController@user')->name('admin.user');
+    Route::get('/admin/users', 'UserController@users')->name('admin.users');
+    Route::any('/admin/user/modify', 'UserController@modifyUser')->name('admin.users.add');
+
     Route::get('/admin/organization/{id}', 'UserController@organization')->name('admin.organization');
     Route::get('/admin/organizations', 'UserController@organizations')->name('admin.organizations');
     Route::any('/admin/organizations/add', 'UserController@addOrganizations')->name('admin.organizations.add');

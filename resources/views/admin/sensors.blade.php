@@ -14,9 +14,9 @@
         <tbody>
         @foreach($sensors as $sensor)
         <tr>
-            <th scope="row">
+            <td scope="row">
                 <a href="{{ url('/admin/sensor/' . $sensor->uuid) }}">
-                {{ $sensor->owner->name }} / {{ $sensor->uuid }}
+                {{ $sensor->owner instanceof \App\Organization ? $sensor->owner->slug : $sensor->owner->name }} / <strong>{{ $sensor->uuid }}</strong>
                 </a>
             </td>
             <td>{{ $sensor->last_measpoint }}</td>
@@ -25,4 +25,5 @@
         @endforeach
         </tbody>
     </table>
+    {{ $sensors->links() }}
 @endsection
