@@ -1,6 +1,10 @@
 <?php
 
-return array(
+/*
+ * Copyright (C) 2018 city_matters. All rights reserved.
+ */
+
+return [
     'dsn' => env('SENTRY_LARAVEL_DSN'),
 
     // capture release as git sha
@@ -11,4 +15,4 @@ return array(
 
     // Capture default user context
     'user_context' => false,
-);
+];
