@@ -6,9 +6,9 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\User;
 use App\Invite;
 use App\Organization;
-use App\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -17,6 +17,7 @@ class UserController extends Controller
     public function users()
     {
         $users = User::paginate(25);
+
         return view('admin.users', [
             'users' => $users,
             ]);

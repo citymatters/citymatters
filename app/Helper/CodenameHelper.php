@@ -12,13 +12,12 @@ class CodenameHelper
     {
         $generator = new \Nubs\RandomNameGenerator\Alliteration();
 
-
-
         return strtolower(str_replace(' ', '_', self::normalize($generator->getName())));
     }
 
-    private static function normalize ($string) {
-        $table = array(
+    private static function normalize($string)
+    {
+        $table = [
             'Š'=>'S', 'š'=>'s', 'Đ'=>'Dj', 'đ'=>'dj', 'Ž'=>'Z', 'ž'=>'z', 'Č'=>'C', 'č'=>'c', 'Ć'=>'C', 'ć'=>'c',
             'À'=>'A', 'Á'=>'A', 'Â'=>'A', 'Ã'=>'A', 'Ä'=>'A', 'Å'=>'A', 'Æ'=>'A', 'Ç'=>'C', 'È'=>'E', 'É'=>'E',
             'Ê'=>'E', 'Ë'=>'E', 'Ì'=>'I', 'Í'=>'I', 'Î'=>'I', 'Ï'=>'I', 'Ñ'=>'N', 'Ò'=>'O', 'Ó'=>'O', 'Ô'=>'O',
@@ -27,7 +26,7 @@ class CodenameHelper
             'ê'=>'e', 'ë'=>'e', 'ì'=>'i', 'í'=>'i', 'î'=>'i', 'ï'=>'i', 'ð'=>'o', 'ñ'=>'n', 'ò'=>'o', 'ó'=>'o',
             'ô'=>'o', 'õ'=>'o', 'ö'=>'o', 'ø'=>'o', 'ù'=>'u', 'ú'=>'u', 'û'=>'u', 'ý'=>'y', 'ý'=>'y', 'þ'=>'b',
             'ÿ'=>'y', 'Ŕ'=>'R', 'ŕ'=>'r',
-        );
+        ];
 
         return strtr($string, $table);
     }

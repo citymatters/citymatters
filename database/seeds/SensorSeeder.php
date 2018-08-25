@@ -16,8 +16,7 @@ class SensorSeeder extends Seeder
     public function run()
     {
         $org = \App\Organization::where('name', 'city_matters')->first();
-        if(!$org)
-        {
+        if (! $org) {
             $org = new \App\Organization();
             $org->name = 'city_matters';
             $org->slug = 'ctymttrs';
