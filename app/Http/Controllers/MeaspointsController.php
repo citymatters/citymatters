@@ -89,6 +89,7 @@ class MeaspointsController extends Controller
             ->where('lat', '<=', $latEnd)
             ->where('lon', '>=', $lonStart)
             ->where('lon', '<=', $lonEnd)
+            ->orderBy('created_at', 'DESC')
             ->limit(1000)
             ->get();
 

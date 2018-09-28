@@ -29,7 +29,8 @@
         var popups = [];
         function updateMapMarkers() {
             var xhr = new XMLHttpRequest();
-            xhr.open('GET', '/api/measpoints/byArea/45.5/7.0/50.5/9.0');
+            var bounds = map.getBounds();
+            xhr.open('GET', '/api/measpoints/byArea/' + bounds.getNorthWest().lat + '/' + bounds.getNorthWest().lng + '/' + bounds.getSouthEast().lat + '/' + bounds.getSouthEast().lng);
             xhr.onload = function() {
                 if (xhr.status === 200) {
                     console.log("Updating measpoint markers");
@@ -39,6 +40,7 @@
                         marker[i].remove();
                     }
                     marker = [];
+                    console.log(data.length + " measpoints fetched");
                     for(var i = 0; i < data.length; i++)
                     {
                         var markerHeight = 25, markerRadius = 25, linearOffset = 25;
@@ -90,13 +92,14 @@
                                     '<td>Humidity</td>' +
                                     '<td>' + data[i].humidity + '%rH</td>' +
                                     '</tr>' +
+                                    '<tr><td colspan="2"><i>updated at '+ data[i].updated_at + '</i></td></tr>' +
                                     '</table>'))
                                 .addTo(map);
 
                         marker[i].getElement().setAttribute('class', 'mapboxgl-marker mapboxgl-marker-anchor-center marker marker-value-' + markerValue)
                     }
                 }
-                setTimeout(updateMapMarkers, 5000);
+                setTimeout(updateMapMarkers, 1000);
             };
             xhr.send();
         }
@@ -104,7 +107,7 @@
         var map = new mapboxgl.Map({
             container: 'map',
             style: 'mapbox://styles/mapbox/streets-v9',
-            center: [11.7530256, 48.3782372],
+            center: [11.753524, 48.3798401], //11.7530256, 48.3782372
             zoom: 16
         });
         map.addControl(new mapboxgl.NavigationControl(), 'top-left');
