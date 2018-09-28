@@ -32,7 +32,7 @@
             xhr.open('GET', '/api/measpoints/byArea/45.5/7.0/50.5/9.0');
             xhr.onload = function() {
                 if (xhr.status === 200) {
-                    console.log("Refreshing");
+                    console.log("Updating measpoint markers");
                     var data = JSON.parse(this.responseText);
                     for(var i = 0; i < marker.length; i++)
                     {
@@ -94,10 +94,9 @@
                                 .addTo(map);
 
                         marker[i].getElement().setAttribute('class', 'mapboxgl-marker mapboxgl-marker-anchor-center marker marker-value-' + markerValue)
-                        console.log(marker[i].getElement());
                     }
                 }
-                // setTimeout(updateMapMarkers, 5000);
+                setTimeout(updateMapMarkers, 5000);
             };
             xhr.send();
         }
