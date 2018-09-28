@@ -3,6 +3,15 @@
     {{ __('Sensor list') }} - city_matters
 @endsection
 @section('content')
+    @component('layout.components.alert')
+        @slot('type')
+            warning
+        @endslot
+        @slot('title')
+            Test Alert
+        @endslot
+        Das ist der Testalert
+    @endcomponent
     <table class="table table-bordered table-striped">
         <thead>
         <tr>

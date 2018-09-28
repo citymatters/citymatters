@@ -4,6 +4,16 @@
 // Variables
 @import "variables";
 
+$primary:       $blue !default;
+$secondary:     $gray-600 !default;
+$success:       $green !default;
+$info:          $cyan !default;
+$warning:       $yellow !default;
+$danger:        $red !default;
+$light:         $gray-100 !default;
+$dark:          $gray-800 !default;
+
+
 
 .adminbar {
   a.navbar-brand {
@@ -15,4 +25,32 @@
     padding-bottom: .1rem;
   }
   padding: .3rem;
+}
+
+.marker {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+
+.marker-value-very-low {
+  background-color: #79bc6a;
+}
+
+.marker-value-low {
+  background-color: #bbcf4c;
+}
+
+.marker-value-medium{
+  background-color: #eec20b;
+}
+
+.marker-value-high{
+  background-color: #f29305;
+}
+
+.marker-value-very-high {
+  background-color: #e8416f;
 }

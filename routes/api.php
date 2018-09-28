@@ -23,6 +23,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::post('/add', 'MeaspointsController@add');
 
-Route::get('/measpoints/byArea/{latStart}/{lonStart}/{latEnd}/{lonEnd}', 'MeaspointsController@measpointsByArea');
+Route::get('/measpoints/byArea/{latStart}/{lonStart}/{latEnd}/{lonEnd}', 'MeaspointsController@measpointsByArea')->name('mspByArea');
 Route::get('/measpoints/byAreaAndTime/{latStart}/{lonStart}/{latEnd}/{lonEnd}/from/{startTime}/to/{endTime}',
-    'MeaspointsController@measpointsByAreaAndTime');
+    'MeaspointsController@measpointsByAreaAndTime')->name('mspByAreaAndTime');

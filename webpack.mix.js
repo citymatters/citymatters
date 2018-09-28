@@ -31,8 +31,8 @@ mix.copy('node_modules/font-awesome/fonts', 'public/fonts');
         plugins: [
             //Compress images
             new CopyWebpackPlugin([{
-                from: 'resources/assets/images', // FROM
-                to: 'images/', // TO
+                from: 'resources/assets/images',
+                to: 'images/',
             }]),
             new ImageminPlugin({
                 test: /\.(jpe?g|png|gif|svg)$/i,

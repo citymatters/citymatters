@@ -89,6 +89,7 @@ class MeaspointsController extends Controller
             ->where('lat', '<=', $latEnd)
             ->where('lon', '>=', $lonStart)
             ->where('lon', '<=', $lonEnd)
+            ->limit(1000)
             ->get();
 
         return response()->json($measpoints);
