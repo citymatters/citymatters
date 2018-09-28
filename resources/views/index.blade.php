@@ -6,7 +6,7 @@
 @endpush
 
 @section('content')
-    <div>
+    <div style="margin-top: -25px;">
         <h1>PM2.5 Belastung</h1>
         <table style="width: 100%;" cellpadding="5px">
             <tr>
@@ -17,7 +17,7 @@
                 <td class="marker-value-very-high">>110 μg/m3</td>
             </tr>
         </table>
-        <div id="map" style="width: 100%; height: 600px;">
+        <div id="map" style="width: 100%; height: 70vh;">
 
         </div>
     </div>

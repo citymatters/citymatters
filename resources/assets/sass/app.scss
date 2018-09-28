@@ -13,8 +13,6 @@ $danger:        $red !default;
 $light:         $gray-100 !default;
 $dark:          $gray-800 !default;
 
-
-
 .adminbar {
   a.navbar-brand {
     font-size: 1rem;
@@ -27,13 +25,30 @@ $dark:          $gray-800 !default;
   padding: .3rem;
 }
 
+@media (min-width: 1200px) {
+  .container {
+    max-width: 1140px;
+  }
+}
+
+@media (min-width: 1400px) {
+  .container {
+    max-width: 1340px;
+  }
+}
+
+@media (min-width: 1600px) {
+  .container {
+    max-width: 1540px;
+  }
+}
+
 .marker {
   width: 20px;
   height: 20px;
   border-radius: 50%;
   display: inline-block;
 }
-
 
 .marker-value-very-low {
   background-color: #79bc6a;
