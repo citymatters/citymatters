@@ -103,7 +103,7 @@
                         marker[i].getElement().setAttribute('class', 'mapboxgl-marker mapboxgl-marker-anchor-center marker marker-value-' + markerValue)
                     }
                 }
-                setTimeout(updateMapMarkers, 1000);
+                setTimeout(updateMapMarkers, 10000);
             };
             xhr.send();
         }
