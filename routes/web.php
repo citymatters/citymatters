@@ -9,6 +9,10 @@ Route::get('/', function () {
 })->name('idx');
 Auth::routes();
 
+Route::get('/diy', function () {
+    return view('diy_hardware');
+})->name('diy');
+
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/settings', 'HomeController@index')->name('user.settings');

@@ -5,6 +5,10 @@
     <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.49.0/mapbox-gl.css' rel='stylesheet' />
 @endpush
 
+@section('title')
+    city_matters
+@endsection
+
 @section('content')
     <div style="margin-top: -25px;">
         <h1>PM2.5 Belastung</h1>
