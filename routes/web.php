@@ -13,6 +13,10 @@ Route::get('/diy', function () {
     return view('diy_hardware');
 })->name('diy');
 
+Route::get('/opendata', function () {
+    return view('open_data');
+})->name('opendata');
+
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/settings', 'HomeController@index')->name('user.settings');

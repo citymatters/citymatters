@@ -10,13 +10,13 @@
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
+                <li class="nav-item {{ Request::url() == route('idx') ? 'active' : '' }}">
                     <a class="nav-link" href="{{ route('idx') }}">Home <span class="sr-only">(current)</span></a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Open Data</a>
+                <li class="nav-item {{ Request::url() == route('opendata') ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ route('opendata') }}">Open Data</a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item {{ Request::url() == route('diy') ? 'active' : '' }}">
                     <a class="nav-link" href="{{ route('diy')  }}">DIY Hardware</a>
                 </li>
                 <li class="nav-item dropdown">
