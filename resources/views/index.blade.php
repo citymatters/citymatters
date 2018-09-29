@@ -99,7 +99,7 @@
                         marker[i].getElement().setAttribute('class', 'mapboxgl-marker mapboxgl-marker-anchor-center marker marker-value-' + markerValue)
                     }
                 }
-                setTimeout(updateMapMarkers, 10000);
+                setTimeout(updateMapMarkers, 1000);
             };
             xhr.send();
         }
