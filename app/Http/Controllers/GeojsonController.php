@@ -42,6 +42,7 @@ class GeojsonController extends Controller
             ->where('lon', '<=', $lonEnd)
             ->where('datetime', '>=', $startTime)
             ->where('datetime', '<=', $endTime)
+            ->limit(1000)
             ->get();
 
         return response()->json(GeojsonHelper::measpointsToGeojson($measpoints));

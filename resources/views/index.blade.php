@@ -229,9 +229,18 @@
         }
 
         map.on('load', function() {
+            var bounds = map.getBounds();
             map.addSource('measpoints', {
                 type: 'geojson',
                 data: '{{ url('/api/measpoints') }}?startTime=' + (Math.round((new Date()).getTime() / 1000) - (86400 * 30))
+                    + '&latStart='
+                    + bounds.getNorthWest().lat
+                    + '&lonStart='
+                    + bounds.getNorthWest().lng
+                    + '&latEnd='
+                    + bounds.getSouthEast().lat
+                    + '&lonEnd='
+                    + bounds.getSouthEast().lng
             });
             for (var i = 0; i < toggleableLayerIds.length; i++) {
                 var id = toggleableLayerIds[i];
