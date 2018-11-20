@@ -159,11 +159,28 @@
                 });
         }
 
+        function updateLayers()
+        {
+            var bounds = map.getBounds();
+            map.getSource('measpoints').setData('{{ url('/api/measpoints') }}?startTime='
+                + (Math.round((new Date()).getTime() / 1000) - (86400 * 30))
+                + '&latStart='
+                + bounds.getNorthWest().lat
+                + '&lonStart='
+                + bounds.getNorthWest().lng
+                + '&latEnd='
+                + bounds.getSouthEast().lat
+                + '&lonEnd='
+                + bounds.getSouthEast().lng);
+        }
+
         map.on('boxzoomend', function(e, b) {
             updateChart();
+            updateLayers();
         });
         map.on('moveend', function(e, b) {
             updateChart();
+            updateLayers();
         });
 
         function convertChartData(data) {
