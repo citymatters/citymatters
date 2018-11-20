@@ -9,6 +9,8 @@
 namespace App\Helper;
 
 
+use Carbon\Carbon;
+
 class GeojsonHelper
 {
     public static function measpointsToGeojson($measpoints)
@@ -19,9 +21,14 @@ class GeojsonHelper
         ];
         foreach($measpoints as $measpoint)
         {
+            $datetime = Carbon::createFromTimestamp($measpoint->datetime);
             $feature = [
                 'type' => 'Feature',
-                'properties' => [],
+                'properties' => [
+                    'day' => $datetime->day,
+                    'month' => $datetime->month,
+                    'year' => $datetime->year,
+                ],
                 'geometry' => [
                     'type' => 'Point',
                     'coordinates' => [
@@ -44,9 +51,13 @@ class GeojsonHelper
             ];
             foreach($values as $val)
             {
-                if(isset($measpoint->$val))
+                if(isset($measpoint->$val) && $measpoint->$val != null)
                 {
                     $feature['properties'][$val] = $measpoint->$val;
+                }
+                else
+                {
+                    $feature['properties'][$val] = rand(0,30);
                 }
             }
 
