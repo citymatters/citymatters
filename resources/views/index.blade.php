@@ -144,7 +144,7 @@
         {
             console.log('Chart update triggered');
             var bounds = map.getBounds();
-            Plotly.d3.json('http://citymatters.test/api/average?days=30&latStart='
+            Plotly.d3.json('{{ url('/api/average') }}?days=30&latStart='
                 + bounds.getNorthWest().lat
                 + '&lonStart='
                 + bounds.getNorthWest().lng
@@ -214,7 +214,7 @@
         map.on('load', function() {
             map.addSource('measpoints', {
                 type: 'geojson',
-                data: 'http://citymatters.test/api/measpoints?startTime=' + (Math.round((new Date()).getTime() / 1000) - (86400 * 30))
+                data: '{{ url('/api/measpoints') }}?startTime=' + (Math.round((new Date()).getTime() / 1000) - (86400 * 30))
             });
             for (var i = 0; i < toggleableLayerIds.length; i++) {
                 var id = toggleableLayerIds[i];
@@ -244,7 +244,7 @@
 
             var bounds = map.getBounds();
 
-            Plotly.d3.json('http://citymatters.test/api/average?days=30&latStart='
+            Plotly.d3.json('{{ url('/api/average') }}?days=30&latStart='
                 + bounds.getNorthWest().lat
                 + '&lonStart='
                 + bounds.getNorthWest().lng
