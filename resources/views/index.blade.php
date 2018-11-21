@@ -145,7 +145,7 @@
             style: 'mapbox://styles/mapbox/streets-v9',
             center: [13.272448, 52.500231], //11.7530256, 48.3782372
             // 52.500231, 13.272448
-            zoom: 14
+            zoom: 12
         });
 
         function updateChart()
