@@ -44,6 +44,10 @@
         #menu a.active:hover {
             background: #3074a4;
         }
+        #fly,
+        #fly2 {
+            float: right;
+        }
     </style>
 @endpush
 
@@ -55,8 +59,11 @@
     <div style="margin-top: -25px;">
         <div class="row">
             <div>
+                <button id='fly'>Jump to Munich</button>
+                <button id='fly2'>Jump to Berlin</button>
                 <label id='day'></label>
-                <input id='slider' type='range' min='1' max='30' step='1' value='4' />
+                Zeitlicher Verlauf:
+                <input id='slider' type='range' min="0" max="31" value='{{ now()->day }}'>
             </div>
             <div class="col-11">
                 <div id="map" style="width: 100%; height: 60vh;"></div>
@@ -130,19 +137,19 @@
             'carbonMonoxide',
             'nitrogenDioxide',
             'humidity',
-            'temperature'
+            'temperature',
         ];
         mapboxgl.accessToken = 'pk.eyJ1IjoiZ3dhbGR2b2dlbCIsImEiOiJjamh1bXFkaGcwcDV4M2tuNThlZ3hiNG9kIn0.SkHO8yJb0C7-hF8L26hWIw';
         var map = new mapboxgl.Map({
             container: 'map',
             style: 'mapbox://styles/mapbox/streets-v9',
-            center: [11.753524, 48.3798401], //11.7530256, 48.3782372
-            zoom: 5
+            center: [13.272448, 52.500231], //11.7530256, 48.3782372
+            // 52.500231, 13.272448
+            zoom: 14
         });
 
         function updateChart()
         {
-            console.log('Chart update triggered');
             var bounds = map.getBounds();
             Plotly.d3.json('{{ url('/api/average') }}?days=30&latStart='
                 + bounds.getNorthWest().lat
@@ -154,7 +161,6 @@
                 + bounds.getSouthEast().lng,
                 function(err, data) {
                     var chartData = convertChartData(data);
-                    console.log(chartData);
                     Plotly.newPlot('chart', chartData, {});
                 });
         }
@@ -262,7 +268,7 @@
                 });
             }
             map.addControl(new mapboxgl.NavigationControl(), 'top-left');
-            filterBy(4);
+            filterBy({{ now()->day }});
             document.getElementById('slider').addEventListener('input', function(e) {
                 var day = parseInt(e.target.value, 10);
                 filterBy(day);
@@ -282,6 +288,18 @@
                 var chartData = convertChartData(data);
                 Plotly.newPlot('chart', chartData, {});
             });
+            document.getElementById('fly').addEventListener('click', function () {
+                map.flyTo({
+                    center: [11.419765, 48.147247]
+                });
+            });
+            document.getElementById('fly2').addEventListener('click', function () {
+                map.flyTo({
+                    center: [13.272448, 52.500231]
+                });
+            });
+
+
         });
 
         for (var i = 0; i < toggleableLayerIds.length; i++) {
