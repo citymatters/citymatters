@@ -154,6 +154,20 @@ class MeaspointsController extends Controller
             }
             foreach($values as $val)
             {
+                switch($val)
+                {
+                    case 'pm2':
+                    case 'pm10':
+                    case 'ozone':
+                    case 'sulfurDioxide':
+                    case 'carbbonMonoxide':
+                    case 'nitrogenDioxide':
+                    case 'humidity':
+                        if($measpoint->$val < 0) {
+                            $measpoint->$val = 0;
+                        }
+                        break;
+                }
                 $days[$day][$val]['count']++;
                 $days[$day][$val]['total'] += $measpoint->$val;
             }

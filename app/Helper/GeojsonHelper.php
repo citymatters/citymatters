@@ -53,6 +53,20 @@ class GeojsonHelper
             {
                 if(isset($measpoint->$val) && $measpoint->$val != null)
                 {
+                    switch($val)
+                    {
+                        case 'pm2':
+                        case 'pm10':
+                        case 'ozone':
+                        case 'sulfurDioxide':
+                        case 'carbbonMonoxide':
+                        case 'nitrogenDioxide':
+                        case 'humidity':
+                            if($measpoint->$val < 0) {
+                                $measpoint->$val = 0;
+                            }
+                            break;
+                    }
                     $feature['properties'][$val] = round($measpoint->$val,1);
                 }
                 else
