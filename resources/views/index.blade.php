@@ -44,10 +44,6 @@
         #menu a.active:hover {
             background: #3074a4;
         }
-        #fly,
-        #fly2 {
-            float: right;
-        }
     </style>
 @endpush
 
@@ -58,17 +54,23 @@
 @section('content')
     <div style="margin-top: -25px;">
         <div class="row">
-            <div>
-                <button id='fly'>Jump to Munich</button>
-                <button id='fly2'>Jump to Berlin</button>
-                <label id='day'></label>
-                Zeitlicher Verlauf:
-                <input id='slider' type='range' min="0" max="31" value='{{ now()->day }}'>
+            <div class="col-12">
+                <div class="row">
+                    <div class="col-sd-12 col-md-10">
+                        Zeitlicher Verlauf (<label id='day'></label>):
+                        <input id='slider' type='range' min="0" max="31" value='{{ now()->day }}'>
+                    </div>
+                    <div class="col-sd-12 col-md-2" id="flycontainer">
+                        Jump to:
+                        <button id='fly'>Munich</button>
+                        <button id='fly2'>Berlin</button>
+                    </div>
+                </div>
             </div>
-            <div class="col-10">
+            <div class="col-md-10 col-sm-12">
                 <div id="map" style="width: 100%; height: 60vh;"></div>
             </div>
-            <div class="col-2">
+            <div class="col-md-2 col-sm-12">
                 <nav id="menu"></nav>
             </div>
         </div>
