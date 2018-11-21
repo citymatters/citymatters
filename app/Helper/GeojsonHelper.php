@@ -53,7 +53,7 @@ class GeojsonHelper
             {
                 if(isset($measpoint->$val) && $measpoint->$val != null)
                 {
-                    $feature['properties'][$val] = $measpoint->$val;
+                    $feature['properties'][$val] = round($measpoint->$val,1);
                 }
                 else
                 {
