@@ -65,10 +65,10 @@
                 Zeitlicher Verlauf:
                 <input id='slider' type='range' min="0" max="31" value='{{ now()->day }}'>
             </div>
-            <div class="col-11">
+            <div class="col-10">
                 <div id="map" style="width: 100%; height: 60vh;"></div>
             </div>
-            <div class="col-1">
+            <div class="col-2">
                 <nav id="menu"></nav>
             </div>
         </div>
@@ -254,6 +254,9 @@
                     'id': id,
                     'type': 'circle',
                     'source': 'measpoints',
+                    'layout': {
+                        'visibility': (id == 'pm2' ? 'visible' : 'none')
+                    },
                     'paint': {
                         'circle-color': getColorScaling(id),
                         'circle-opacity': .6,
@@ -298,8 +301,6 @@
                     center: [13.272448, 52.500231]
                 });
             });
-
-
         });
 
         for (var i = 0; i < toggleableLayerIds.length; i++) {
@@ -307,7 +308,7 @@
 
             var link = document.createElement('a');
             link.href = '#';
-            link.className = 'active';
+            link.className = id == 'pm2' ? 'active' : '';
             link.textContent = id;
 
             link.onclick = function (e) {
@@ -329,5 +330,49 @@
             var layers = document.getElementById('menu');
             layers.appendChild(link);
         }
+
+        map.on('click', 'pm2', function (e) {
+            var coordinates = e.features[0].geometry.coordinates.slice();
+            var description = '<table cellpadding="4">' +
+                '<tr>' +
+                    '<td>PM2.5:</td>' +
+                    '<td>' + e.features[0].properties.pm2 + ' μg/m3</td>' +
+                    '</tr>' +
+                '<tr>' +
+                    '<td>PM10:</td>' +
+                    '<td>' + e.features[0].properties.pm10 + ' μg/m3</td>' +
+                    '</tr>' +
+                '<tr>' +
+                    '<td>Temperature:</td>' +
+                    '<td>' + e.features[0].properties.temperature + '°C</td>' +
+                    '</tr>' +
+                '<tr>' +
+                    '<td>Humidity</td>' +
+                    '<td>' + e.features[0].properties.humidity + '%rH</td>' +
+                    '</tr>' +
+                '</table>';
+
+            // Ensure that if the map is zoomed out such that multiple
+            // copies of the feature are visible, the popup appears
+            // over the copy being pointed to.
+            while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+                coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+            }
+
+            new mapboxgl.Popup()
+                .setLngLat(coordinates)
+                .setHTML(description)
+                .addTo(map);
+        });
+
+        // Change the cursor to a pointer when the mouse is over the places layer.
+        map.on('mouseenter', 'pm2', function () {
+            map.getCanvas().style.cursor = 'pointer';
+        });
+
+        // Change it back to a pointer when it leaves.
+        map.on('mouseleave', 'pm2', function () {
+            map.getCanvas().style.cursor = '';
+        });
     </script>
 @endpush
