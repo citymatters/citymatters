@@ -28,7 +28,9 @@ services:
 - redis-server
 - mongodb
 before_install:
-- travis/ci-pecl-install mongodb
+- echo "extension = mongo.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
+#- travis/ci-pecl-install mongodb
+#- pecl install mongodb
 install:
 - cp .env.travis .env
 - composer self-update
