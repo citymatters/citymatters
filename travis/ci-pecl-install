@@ -104,7 +104,7 @@ fi
 info "Installing new version..."
 echo "> pecl install ${MODULE}"
 
-printf "\n" | pecl install ${MODULE} || error "Installation failed"
+printf "\n" | pecl install ${MODULE} || true
 
 MODULE_VER_ARRAY=( $(pecl info ${MODULE} | grep 'Release Version') )
 MODULE_VER=${MODULE_VER_ARRAY[2]}
