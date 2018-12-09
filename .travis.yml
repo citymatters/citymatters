@@ -8,7 +8,7 @@ matrix:
   allow_failures:
   - php: nightly
 
-dist: trusty
+dist: xenial
 os: linux
 cache:
   yarn: true
@@ -28,9 +28,8 @@ services:
 - redis-server
 - mongodb
 before_install:
-- echo "extension = mongo.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
 #- travis/ci-pecl-install mongodb
-#- pecl install mongodb
+- pecl install mongodb
 install:
 - cp .env.travis .env
 - composer self-update
