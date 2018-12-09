@@ -44,4 +44,4 @@ script:
 - if [ -f storage/logs/laravel.log ]; then cat storage/logs/laravel.log; fi
 after_success:
 - vendor/bin/infection
-- MERGE_BRANCH='master' MERGE_PHP_VERSION='7.2' TARGET_BRANCH='production' travis/automerge
+- travis/automerge

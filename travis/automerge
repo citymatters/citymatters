@@ -2,6 +2,10 @@
 
 
 export GITHUB_REPO='citymatters/citymatters'
+export MERGE_BRANCH='master'
+export MERGE_PHP_VERSION='7.2'
+export TARGET_BRANCH='production'
+
 export GIT_COMMITTER_EMAIL='travis@citymatters.de'
 export GIT_COMMITTER_NAME='Travis CI'
 
@@ -19,5 +23,5 @@ git clone https://github.com/$GITHUB_REPO $TRAVIS_BUILD_DIR/temp
 cd $TRAVIS_BUILD_DIR/temp
 git checkout $TARGET_BRANCH
 git merge --ff-only "$TRAVIS_COMMIT"
-push_uri="https://$GITHUB_SECRET_TOKEN@github.com/$GITHUB_REPO"
-git push "$push_uri" "$TARGET_BRANCH" >/dev/null 2>&1
+export PUSH_URI="https://$GITHUB_SECRET_TOKEN@github.com/$GITHUB_REPO"
+git push "$PUSH_URI" "$TARGET_BRANCH" >/dev/null 2>&1
