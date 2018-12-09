@@ -1,13 +1,10 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: gwaldvogel
- * Date: 20.11.18
- * Time: 14:32
+
+/*
+ * Copyright (C) 2018 city_matters. All rights reserved.
  */
 
 namespace App\Helper;
-
 
 use Carbon\Carbon;
 
@@ -19,8 +16,7 @@ class GeojsonHelper
             'type' => 'FeatureCollection',
             'features' => [],
         ];
-        foreach($measpoints as $measpoint)
-        {
+        foreach ($measpoints as $measpoint) {
             $datetime = Carbon::createFromTimestamp($measpoint->datetime);
             $feature = [
                 'type' => 'Feature',
@@ -34,8 +30,8 @@ class GeojsonHelper
                     'coordinates' => [
                         $measpoint->lon,
                         $measpoint->lat,
-                        0
-                    ]
+                        0,
+                    ],
                 ],
                 'id' => $measpoint->_id,
             ];
@@ -47,14 +43,11 @@ class GeojsonHelper
                 'carbonMonoxide',
                 'nitrogenDioxide',
                 'humidity',
-                'temperature'
+                'temperature',
             ];
-            foreach($values as $val)
-            {
-                if(isset($measpoint->$val) && $measpoint->$val != null)
-                {
-                    switch($val)
-                    {
+            foreach ($values as $val) {
+                if (isset($measpoint->$val) && $measpoint->$val != null) {
+                    switch ($val) {
                         case 'pm2':
                         case 'pm10':
                         case 'ozone':
@@ -62,21 +55,20 @@ class GeojsonHelper
                         case 'carbbonMonoxide':
                         case 'nitrogenDioxide':
                         case 'humidity':
-                            if($measpoint->$val < 0) {
+                            if ($measpoint->$val < 0) {
                                 $measpoint->$val = 0;
                             }
                             break;
                     }
-                    $feature['properties'][$val] = round($measpoint->$val,1);
-                }
-                else
-                {
-                    $feature['properties'][$val] = rand(0,30);
+                    $feature['properties'][$val] = round($measpoint->$val, 1);
+                } else {
+                    $feature['properties'][$val] = rand(0, 30);
                 }
             }
 
             $geojson['features'][] = $feature;
         }
+
         return $geojson;
     }
 }

@@ -1,5 +1,9 @@
 <?php
 
+/*
+ * Copyright (C) 2018 city_matters. All rights reserved.
+ */
+
 namespace App\Console\Commands;
 
 use App\Measpoint;
@@ -53,124 +57,94 @@ class CrawlSmarterTogetherApi extends Command
 
         $lamppostResponse = $guzzle->request('GET', '/lampposts', [
             'headers' => [
-                'Authorization' => 'bearer ' . $this->apiToken
-            ]
+                'Authorization' => 'bearer '.$this->apiToken,
+            ],
         ]);
         $lamppostJson = $lamppostResponse->getBody()->getContents();
-        foreach(json_decode($lamppostJson, true) as $lp)
-        {
+        foreach (json_decode($lamppostJson, true) as $lp) {
             $lampposts[$lp['id']] = [];
         }
 
-        foreach($lampposts as $lpName => $_)
-        {
-            $req = $guzzle->request('GET', '/lampposts/' . $lpName,
+        foreach ($lampposts as $lpName => $_) {
+            $req = $guzzle->request('GET', '/lampposts/'.$lpName,
                 [
                     'headers' => [
-                        'Authorization' => 'bearer ' . $this->apiToken
-                    ]
+                        'Authorization' => 'bearer '.$this->apiToken,
+                    ],
                 ]);
             $lampposts[$lpName] = json_decode($req->getBody()->getContents(), true);
-            if(!array_key_exists('connectedSensors', $lampposts[$lpName]))
-            {
+            if (! array_key_exists('connectedSensors', $lampposts[$lpName])) {
                 unset($lampposts[$lpName]);
             }
         }
 
-        foreach($lampposts as $lp => $data)
-        {
-            foreach($data['connectedSensors'] as $sensor)
-            {
-                $endpoint = '/lampposts/' . $lp . '/connectedSensors/' . $sensor['connectedSensorId'] . '/measuredValues';
+        foreach ($lampposts as $lp => $data) {
+            foreach ($data['connectedSensors'] as $sensor) {
+                $endpoint = '/lampposts/'.$lp.'/connectedSensors/'.$sensor['connectedSensorId'].'/measuredValues';
                 $req = $guzzle->request('GET', $endpoint, [
                     'headers' => [
-                        'Authorization' => 'bearer ' . $this->apiToken
+                        'Authorization' => 'bearer '.$this->apiToken,
                     ],
                     'query' => [
                         'timestampFrom' => '2018-01-01T11:00:00+01:00',
                         'timestampTo' => '2018-12-31T23:59:59+01:00',
-                        'interval' => 'hourly'
-                    ]
+                        'interval' => 'hourly',
+                    ],
                 ]);
                 $sensorData = json_decode($req->getBody()->getContents(), true);
-                foreach($sensorData as $dataset)
-                {
+                foreach ($sensorData as $dataset) {
                     $measpoint = new Measpoint();
-                    $measpoint->sensor = 'st:' . $dataset['sensorId'];
+                    $measpoint->sensor = 'st:'.$dataset['sensorId'];
                     $measpoint->lat = $lampposts[$dataset['lamppostId']]['location']['coordinates'][1];
                     $measpoint->lon = $lampposts[$dataset['lamppostId']]['location']['coordinates'][0];
                     $datetime = new Carbon($dataset['timestamp']);
                     $measpoint->datetime = $datetime->timestamp;
 
-                    if(array_key_exists('particlePollutionFine', $dataset))
-                    {
+                    if (array_key_exists('particlePollutionFine', $dataset)) {
                         $measpoint->pm2 = $dataset['particlePollutionFine'];
-                    }
-                    else
-                    {
+                    } else {
                         $measpoint->pm2 = null;
                     }
 
-                    if(array_key_exists('particlePollutionCoarse', $dataset))
-                    {
+                    if (array_key_exists('particlePollutionCoarse', $dataset)) {
                         $measpoint->pm10 = $dataset['particlePollutionCoarse'];
-                    }
-                    else
-                    {
+                    } else {
                         $measpoint->pm10 = null;
                     }
 
-                    if(array_key_exists('ozone', $dataset))
-                    {
+                    if (array_key_exists('ozone', $dataset)) {
                         $measpoint->ozone = $dataset['ozone'];
-                    }
-                    else
-                    {
+                    } else {
                         $measpoint->ozone = null;
                     }
 
-                    if(array_key_exists('sulfurDioxide', $dataset))
-                    {
+                    if (array_key_exists('sulfurDioxide', $dataset)) {
                         $measpoint->sulfurDioxide = $dataset['sulfurDioxide'];
-                    }
-                    else
-                    {
+                    } else {
                         $measpoint->sulfurDioxide = null;
                     }
 
-                    if(array_key_exists('carbonMonoxide', $dataset))
-                    {
+                    if (array_key_exists('carbonMonoxide', $dataset)) {
                         $measpoint->carbonMonoxide = $dataset['carbonMonoxide'];
-                    }
-                    else
-                    {
+                    } else {
                         $measpoint->carbonMonoxide = null;
                     }
 
-                    if(array_key_exists('nitrogenDioxide', $dataset))
-                    {
+                    if (array_key_exists('nitrogenDioxide', $dataset)) {
                         $measpoint->nitrogenDioxide = $dataset['nitrogenDioxide'];
-                    }
-                    else
-                    {
+                    } else {
                         $measpoint->nitrogenDioxide = null;
                     }
 
-                    if(array_key_exists('humidity', $dataset))
-                    {
+                    if (array_key_exists('humidity', $dataset)) {
                         $measpoint->humidity = $dataset['humidity'];
-                    }
-                    else
-                    {
+                    } else {
                         $measpoint->humidity = null;
                     }
 
-                    if(array_key_exists('temperature', $dataset))
-                    {
+                    if (array_key_exists('temperature', $dataset)) {
                         $measpoint->temperature = $dataset['temperature'];
-                    }
-                    else
-                    {
+                    } else {
                         $measpoint->temperature = null;
                     }
                     $measpoint->save();
@@ -187,7 +161,7 @@ class CrawlSmarterTogetherApi extends Command
             [
                 'auth' => [
                     $this->argument('clientid'),
-                    $this->argument('clientsecret')
+                    $this->argument('clientsecret'),
                 ],
                 'form_params' => [
                     'grant_type' => 'client_credentials',
@@ -197,6 +171,7 @@ class CrawlSmarterTogetherApi extends Command
 
         $body = $response->getBody()->getContents();
         $body = json_decode($body, true);
+
         return $body['access_token'];
     }
 }
