@@ -117,7 +117,6 @@ class MeaspointsController extends Controller
             $lonEnd = $a;
         }
 
-
         $earliest = now()->timestamp - $days * 86400;
         $earliest = (int) $earliest;
         $measpoints = Measpoint::where('lat', '>=', $latStart)
@@ -136,26 +135,21 @@ class MeaspointsController extends Controller
             'carbonMonoxide',
             'nitrogenDioxide',
             'humidity',
-            'temperature'
+            'temperature',
         ];
-        foreach($measpoints as $measpoint)
-        {
+        foreach ($measpoints as $measpoint) {
             $day = (int) (($measpoint->datetime - $earliest) / 86400);
-            if(!array_key_exists($day, $days)) {
-
-                $days[$day]  = [];
-                foreach($values as $val)
-                {
+            if (! array_key_exists($day, $days)) {
+                $days[$day] = [];
+                foreach ($values as $val) {
                     $days[$day][$val] = [
                         'count' => 0,
                         'total' => 0,
                     ];
                 }
             }
-            foreach($values as $val)
-            {
-                switch($val)
-                {
+            foreach ($values as $val) {
+                switch ($val) {
                     case 'pm2':
                     case 'pm10':
                     case 'ozone':
@@ -163,7 +157,7 @@ class MeaspointsController extends Controller
                     case 'carbbonMonoxide':
                     case 'nitrogenDioxide':
                     case 'humidity':
-                        if($measpoint->$val < 0) {
+                        if ($measpoint->$val < 0) {
                             $measpoint->$val = 0;
                         }
                         break;
@@ -172,14 +166,13 @@ class MeaspointsController extends Controller
                 $days[$day][$val]['total'] += $measpoint->$val;
             }
         }
-        foreach($days as $key => $day)
-        {
-            foreach($day as $measurement => $value)
-            {
+        foreach ($days as $key => $day) {
+            foreach ($day as $measurement => $value) {
                 $days[$key][$measurement] = round($value['total'] / $value['count'], 2);
             }
             $days[$key]['index'] = $key;
         }
+
         return response()->json($days);
     }
 }
