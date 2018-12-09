@@ -28,8 +28,8 @@ services:
 - redis-server
 - mongodb
 before_install:
-#- travis/ci-pecl-install mongodb
-- pecl install mongodb
+- travis/ci-pecl-install mongodb
+#- pecl install mongodb
 install:
 - cp .env.travis .env
 - composer self-update
