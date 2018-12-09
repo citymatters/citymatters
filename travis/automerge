@@ -5,12 +5,12 @@ export GITHUB_REPO='citymatters/citymatters'
 export GIT_COMMITTER_EMAIL='travis@citymatters.de'
 export GIT_COMMITTER_NAME='Travis CI'
 
-if ! $TRAVIS_BRANCH == $MERGE_BRANCH; then
+if ! [ "$TRAVIS_BRANCH" = "$MERGE_BRANCH" ]; then
     echo "Current branch will not be automerged."
     exit 0
 fi
 
-if ! $MERGE_PHP_VERSION == $TRAVIS_PHP_VERSION; then
+if ! [ "$MERGE_PHP_VERSION" = "$TRAVIS_PHP_VERSION" ]; then
     echo "Current PHP version will not be automerged."
     exit 0
 fi
