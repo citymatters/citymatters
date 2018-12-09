@@ -1,10 +1,14 @@
 <?php
 
+/*
+ * Copyright (C) 2018 city_matters. All rights reserved.
+ */
+
 namespace App\Http\Controllers;
 
-use App\Helper\GeojsonHelper;
 use App\Measpoint;
 use Illuminate\Http\Request;
+use App\Helper\GeojsonHelper;
 
 class GeojsonController extends Controller
 {
