@@ -3,12 +3,13 @@ php:
 - 7.2
 - 7.3
 - nightly
-
 matrix:
   allow_failures:
   - php: nightly
   - php: 7.3
-
+env:
+  global:
+    secure: YxtZv6TMrjXpMFN/rdzXHW4wTztklHDZ7XQHwtSBx4F+sX2yJG7jIfeOxXIOQw5xqAiu5NX4mUkBY2AezGiMMGtbipGN/h8YQqAmlfyR9cZUTcZNBmDINKJRz6OGRPCHp1L/wevmqirzVnZljioGXy6sX3CDJ+rz2Cotkjq3636/ISPTP4IgtXvtWSPoyX++WT6bd7J2NIGA0Ywa+9N+/Rwk7LNQV5dLpPNZR1eRpwOTZ2A8434+QmYKTdRlWxYoADSQi5OsGuEdWuuhtncNJSIFw2U0OPTtYlMUg/R7Gj0tpknuOqNrv8WrEfkQeXl/sUvUb1x5GOpiC3seUlM3TPn1TaRa7BLA7sLdhZagZIZnvmP1cV5nFHh/1bMF4JivvOqdeomgQW+mdpS1r8MBdbrWCTUXOsfNM88c/pG6Wp4SYD5VT0Utw981387HGX4icwpzbSBrBm2oTL9mgQlRFpzspRpYWVbLwh2IFs/6Q+huMILetjLORWbC+pMVNaPJVUlG/qS6lNY0rLiR4/rfUz+zLYF1TOPzS+GUVmVq80uL3ThGyM0DfQL2CgGBsHv/WsHqFKLHzwvL4UUuVG7mTbnlnxX/xAj5EWMNEEFiXTDwqNngaIW4r1EsO/YyyTYqeprW/3wdzm/uR90BZ8LzD48JFCYp9qmbCrKwgzQinVk=
 dist: xenial
 os: linux
 cache:
@@ -30,7 +31,6 @@ services:
 - mongodb
 before_install:
 - travis/ci-pecl-install mongodb
-#- pecl install mongodb
 install:
 - cp .env.travis .env
 - composer self-update
@@ -44,8 +44,4 @@ script:
 - if [ -f storage/logs/laravel.log ]; then cat storage/logs/laravel.log; fi
 after_success:
 - vendor/bin/infection
-- if [ $TRAVIS_BRANCH == 'master' ] && [ $TRAVIS_PHP_VERSION == '7.2' ]; then git clone git@github.com:citymatters/citymatters.git $TRAVIS_BUILD_DIR/temp; fi
-- if [ $TRAVIS_BRANCH == 'master' ] && [ $TRAVIS_PHP_VERSION == '7.2' ]; then cd $TRAVIS_BUILD_DIR/temp; fi
-- if [ $TRAVIS_BRANCH == 'master' ] && [ $TRAVIS_PHP_VERSION == '7.2' ]; then git checkout production; fi
-- if [ $TRAVIS_BRANCH == 'master' ] && [ $TRAVIS_PHP_VERSION == '7.2' ]; then git merge --ff-only "$TRAVIS_COMMIT"; fi
-- if [ $TRAVIS_BRANCH == 'master' ] && [ $TRAVIS_PHP_VERSION == '7.2' ]; then git push origin production; fi
+- MERGE_BRANCCH='master' MERGE_PHP_VERSION='7.2' TARGET_BRANCH='production' travis/automerge

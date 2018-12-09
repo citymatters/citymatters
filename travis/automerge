@@ -1,0 +1,24 @@
+#!/bin/bash -e
+
+
+export GITHUB_REPO='citymatters/citymatters'
+export GIT_COMMITTER_EMAIL='travis@citymatters.de'
+export GIT_COMMITTER_NAME='Travis CI'
+
+if ! $TRAVIS_BRANCH == $MERGE_BRANCH; then
+    echo "Current branch will not be automerged."
+    exit 0
+fi
+
+if ! $MERGE_PHP_VERSION == $TRAVIS_PHP_VERSION; then
+    echo "Current PHP version will not be automerged."
+    exit 0
+fi
+
+git clone https://github.com/$GITHUB_REPO $TRAVIS_BUILD_DIR/temp
+cd $TRAVIS_BUILD_DIR/temp
+git checkout $TARGET_BRANCH
+git merge --ff-only "$TRAVIS_COMMIT"
+push_uri="https://$GITHUB_SECRET_TOKEN@github.com/$GITHUB_REPO"
+git push "$push_uri" "$BRANCH_TO_MERGE_INTO" >/dev/null 2>&1
+git push "$push_uri" :"$TRAVIS_BRANCH" >/dev/null 2>&1
