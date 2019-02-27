@@ -28,14 +28,16 @@ notifications:
     on_failure: always
 services:
 - redis-server
-- mongodb
+- postgresql
 before_install:
 - travis/ci-pecl-install mongodb
 install:
+- psql -c 'create database travis_ci_test;' -U postgres
 - cp .env.travis .env
 - composer self-update
 - composer install --no-interaction
 - php artisan key:generate
+- php artisan migrate
 - node -v
 - yarn install
 - yarn run prod
