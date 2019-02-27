@@ -29,8 +29,6 @@ notifications:
 services:
 - redis-server
 - postgresql
-before_install:
-- travis/ci-pecl-install mongodb
 install:
 - psql -c 'create database travis_ci_test;' -U postgres
 - cp .env.travis .env
