@@ -7,7 +7,7 @@
 namespace App;
 
 use Illuminate\Notifications\Notifiable;
-use Jenssegers\Mongodb\Eloquent\Model as Model;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 
 class User extends Model implements AuthenticatableContract

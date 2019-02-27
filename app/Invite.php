@@ -6,7 +6,7 @@
 
 namespace App;
 
-use Jenssegers\Mongodb\Eloquent\Model as Model;
+use Illuminate\Database\Eloquent\Model;
 
 class Invite extends Model
 {

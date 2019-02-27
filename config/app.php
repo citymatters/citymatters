@@ -154,9 +154,6 @@ return [
         /*
          * Package Service Providers...
          */
-        Jenssegers\Mongodb\MongodbServiceProvider::class,
-        Jenssegers\Mongodb\Auth\PasswordResetServiceProvider::class,
-        Neoxia\Routing\ResponseFactoryServiceProvider::class,
 
         /*
          * Application Service Providers...

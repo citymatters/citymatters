@@ -7,6 +7,8 @@
 namespace App\Http\Controllers;
 
 use App\Measpoint;
+use App\MeaspointValue;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class MeaspointsController extends Controller
@@ -14,16 +16,20 @@ class MeaspointsController extends Controller
     public function add(Request $request)
     {
         $measpoint = new Measpoint();
-        $measpoint->sensor = $request->json('sensor');
+        $measpoint->sensor_id = $request->json('sensor');
         $measpoint->lat = $request->json('lat');
         $measpoint->lon = $request->json('lon');
-        $measpoint->datetime = $request->json('datetime');
-        foreach ($request->json('data') as $data) {
-            $type = $data['type'];
-            $measpoint->$type = $data['value'];
-        }
+        $measpoint->datetime = Carbon::createFromTimestamp($request->json('datetime'));
         $measpoint->save();
 
+        foreach ($request->json('data') as $data) {
+            $value = new MeaspointValue();
+            $value->measpoint_id = $measpoint->id;
+            $value->value = $data['value'];
+            $value->unit = $data['unit'];
+            $value->type = $data['type'];
+            $value->save();
+        }
         return response()->json(['success' => true]);
     }
 
@@ -55,12 +61,15 @@ class MeaspointsController extends Controller
             $endTime = $a;
         }
 
+        $startTime = Carbon::createFromTimestamp($startTime);
+        $endTime = Carbon::createFromTimestamp($endTime);
+
         $measpoints = Measpoint::where('lat', '>=', $latStart)
             ->where('lat', '<=', $latEnd)
             ->where('lon', '>=', $lonStart)
             ->where('lon', '<=', $lonEnd)
-            ->where('datetime', '>=', $startTime)
-            ->where('datetime', '<=', $endTime)
+            ->where('datetime', '>=', $startTime->toDateTimeString())
+            ->where('datetime', '<=', $endTime->toDateTimeString())
             ->get();
 
         return response()->json($measpoints);

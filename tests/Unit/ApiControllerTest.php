@@ -7,13 +7,17 @@
 namespace Tests\Unit;
 
 use App\Measpoint;
+use Carbon\Carbon;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class ApiControllerTest extends TestCase
 {
+    use RefreshDatabase;
+
     protected $faker;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->faker = \Faker\Factory::create();
@@ -42,22 +46,22 @@ class ApiControllerTest extends TestCase
             'datetime' => now()->timestamp,
             'data' => [
                 [
-                    'type' => 'temperature',
+                    'type' => 'Temperature',
                     'unit' => 'celsius',
                     'value' => 22.3,
                 ],
                 [
-                    'type' => 'humidity',
-                    'unit' => 'rh',
+                    'type' => 'Humidity',
+                    'unit' => 'RH',
                     'value' => 56.0,
                 ],
                 [
-                    'type' => 'pm2',
+                    'type' => 'PM2.5',
                     'unit' => 'µg/m3',
                     'value' => 5.34,
                 ],
                 [
-                    'type' => 'pm10',
+                    'type' => 'PM10',
                     'unit' => 'µg/m3',
                     'value' => 14.32,
                 ],
@@ -74,14 +78,22 @@ class ApiControllerTest extends TestCase
                 'success' => true,
             ]);
 
-        $measpoint = Measpoint::where('sensor', $payload['sensor'])->first();
+        $measpoint = Measpoint::where('sensor_id', $payload['sensor'])->first();
 
         $this->assertEquals($payload['lat'], $measpoint->lat);
         $this->assertEquals($payload['lon'], $measpoint->lon);
-        $this->assertEquals($payload['datetime'], $measpoint->datetime);
-        for ($i = 0; $i < 4; $i++) {
-            $type = $payload['data'][$i]['type'];
-            $this->assertEquals($payload['data'][$i]['value'], $measpoint->$type);
+        $this->assertEquals(Carbon::createFromTimestamp($payload['datetime']), $measpoint->datetime);
+        foreach($measpoint->values as $value) {
+            $found = false;
+            foreach($payload['data'] as $data) {
+                $found = ($data['type'] == $value->type
+                && $data['unit'] == $value->unit
+                && $data['value'] == $value->value);
+                if($found) {
+                    break;
+                }
+            }
+            $this->assertTrue($found);
         }
         $measpoint->delete();
     }
@@ -91,7 +103,6 @@ class ApiControllerTest extends TestCase
      */
     public function testMeaspointsByArea()
     {
-        $this->resetDatabase();
         $measpoints = factory(Measpoint::class, 10)->create();
 
         $response = $this->json('GET',
@@ -112,7 +123,6 @@ class ApiControllerTest extends TestCase
      */
     public function testMeaspointsByAreaFilterArea()
     {
-        $this->resetDatabase();
         $measpoints = factory(Measpoint::class, 5)->create(
             [
                 'lat' => $this->faker->randomFloat(6, 47.95, 48),
@@ -138,7 +148,6 @@ class ApiControllerTest extends TestCase
      */
     public function testMeaspointsByAreaAndTime()
     {
-        $this->resetDatabase();
         $measpoints = factory(Measpoint::class, 10)->create();
 
         $response = $this->json('GET',
@@ -165,7 +174,6 @@ class ApiControllerTest extends TestCase
      */
     public function testMeaspointsByAreaAndTimeFilterArea()
     {
-        $this->resetDatabase();
         $measpoints = factory(Measpoint::class, 5)->create(
             [
                 'lat' => $this->faker->randomFloat(6, 47.95, 48),
@@ -195,21 +203,21 @@ class ApiControllerTest extends TestCase
      */
     public function testMeaspointsByAreaAndTimeFilterTime()
     {
-        $this->resetDatabase();
-
-        $start = now()->subDays(30)->timestamp;
-        $middle = now()->subDays(15)->timestamp;
+        $subStart = 30;
+        $subMiddle = 15;
+        $start = now()->subDays($subStart)->timestamp;
+        $middle = now()->subDays($subMiddle)->timestamp;
         $end = now()->addDay()->timestamp;
 
         $measpoints = factory(Measpoint::class, 5)->create(
             [
-                'datetime' => $this->faker->numberBetween($start, $middle),
+                'datetime' => now()->subDays($this->faker->numberBetween($subMiddle, $subStart))->toDateTimeString(),
             ]
         );
 
         $measpoints = factory(Measpoint::class, 5)->create(
             [
-                'datetime' => $this->faker->numberBetween($middle, $end),
+                'datetime' => now()->subDays($this->faker->numberBetween(-1, $subMiddle))->toDateTimeString(),
             ]
         );
 
