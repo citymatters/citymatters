@@ -55,7 +55,7 @@
     <div style="margin-top: -25px;">
         <div class="row">
             <div class="col-12">
-                <div class="row">
+                <!--<div class="row">
                     <div class="col-sd-12 col-md-10">
                         Zeitlicher Verlauf (<label id='day'></label>):
                         <input id='slider' type='range' min="0" max="31" value='{{ now()->day }}'>
@@ -65,7 +65,7 @@
                         <button id='fly'>Munich</button>
                         <button id='fly2'>Berlin</button>
                     </div>
-                </div>
+                </div>-->
             </div>
             <div class="col-md-10 col-sm-12">
                 <div id="map" style="width: 100%; height: 60vh;"></div>
@@ -134,10 +134,6 @@
         var toggleableLayerIds = [
             'pm2',
             'pm10',
-            'ozone',
-            'sulfurDioxide',
-            'carbonMonoxide',
-            'nitrogenDioxide',
             'humidity',
             'temperature',
         ];
@@ -145,8 +141,7 @@
         var map = new mapboxgl.Map({
             container: 'map',
             style: 'mapbox://styles/mapbox/streets-v9',
-            center: [13.272448, 52.500231], //11.7530256, 48.3782372
-            // 52.500231, 13.272448
+            center: [7.839586, 47.996945],
             zoom: 12
         });
 
