@@ -95,4 +95,84 @@ class MeaspointsController extends Controller
 
         return response()->json($measpoints);
     }
+
+    public function getAverageForLastXDays(Request $request)
+    {
+        $latStart = (float) $request->input('latStart', 0.0);
+        $lonStart = (float) $request->input('lonStart', 0.0);
+        $latEnd = (float) $request->input('latEnd', 1000.0);
+        $lonEnd = (float) $request->input('lonEnd', 1000.0);
+
+        $days = (int) $request->input('days', 0);
+
+        if ($latStart > $latEnd) {
+            $a = $latStart;
+            $latStart = $latEnd;
+            $latEnd = $a;
+        }
+
+        if ($lonStart > $lonEnd) {
+            $a = $lonStart;
+            $lonStart = $lonEnd;
+            $lonEnd = $a;
+        }
+
+        $earliest = now()->timestamp - $days * 86400;
+        $earliest = (int) $earliest;
+        $measpoints = Measpoint::where('lat', '>=', $latStart)
+            ->where('lat', '<=', $latEnd)
+            ->where('lon', '>=', $lonStart)
+            ->where('lon', '<=', $lonEnd)
+            ->where('datetime', '>=', $earliest)
+            ->get();
+
+        $days = [];
+        $values = [
+            'pm2',
+            'pm10',
+            'ozone',
+            'sulfurDioxide',
+            'carbonMonoxide',
+            'nitrogenDioxide',
+            'humidity',
+            'temperature',
+        ];
+        foreach ($measpoints as $measpoint) {
+            $day = (int) (($measpoint->datetime - $earliest) / 86400);
+            if (! array_key_exists($day, $days)) {
+                $days[$day] = [];
+                foreach ($values as $val) {
+                    $days[$day][$val] = [
+                        'count' => 0,
+                        'total' => 0,
+                    ];
+                }
+            }
+            foreach ($values as $val) {
+                switch ($val) {
+                    case 'pm2':
+                    case 'pm10':
+                    case 'ozone':
+                    case 'sulfurDioxide':
+                    case 'carbbonMonoxide':
+                    case 'nitrogenDioxide':
+                    case 'humidity':
+                        if ($measpoint->$val < 0) {
+                            $measpoint->$val = 0;
+                        }
+                        break;
+                }
+                $days[$day][$val]['count']++;
+                $days[$day][$val]['total'] += $measpoint->$val;
+            }
+        }
+        foreach ($days as $key => $day) {
+            foreach ($day as $measurement => $value) {
+                $days[$key][$measurement] = round($value['total'] / $value['count'], 2);
+            }
+            $days[$key]['index'] = $key;
+        }
+
+        return response()->json($days);
+    }
 }
