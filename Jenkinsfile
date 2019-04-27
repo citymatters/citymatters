@@ -9,6 +9,7 @@ node('php7.3') {
             sh "composer install --no-interaction"
             sh "php artisan key:generate"
             sh "php artisan migrate"
+            sh "psql -c 'create database travis_ci_test;' -U postgres"
         }
         stage('Testing') {
             sh "vendor/bin/phpunit"
@@ -24,6 +25,7 @@ node('php7.3') {
         throw error
     } finally {
         sh "rm -rf ./*"
+        sh "psql -c 'drop database travis_ci_test;' -U postgres"
     }
     
 }
